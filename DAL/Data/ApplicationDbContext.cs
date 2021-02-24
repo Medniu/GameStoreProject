@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameStore.Data
+namespace DAL.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
