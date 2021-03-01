@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,17 +8,19 @@ using System.Threading.Tasks;
 
 namespace GameStore.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class HomeController : Controller
-    {
-        [HttpGet]      
-        [Route("getInfo")]
-        public ActionResult<string> GetInfo()
-        {           
-            return "Hello World";           
-        }     
-        
+   
 
+    [Route("api/[controller]")]
+    [ApiController]
+    public class HomeController : ControllerBase
+    {       
+        [HttpGet]
+        [Route("getInfo")]        
+        //[Authorize(Roles = UserRoles.Administrator.ToString())]
+        [Authorize(Roles = "admin")]
+        public ActionResult<string> GetInfo()
+        {
+            return "Hello World";
+        }
     }
 }
