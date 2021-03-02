@@ -15,6 +15,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using System.Web.Http.Results;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Http;
 
 namespace BLL.Services
 {
@@ -37,7 +40,49 @@ namespace BLL.Services
             _emailService = emailService;
             _mapper = mapper;
         }
+        public async Task<bool> ChangePassword(string userId, UserDTO userDTO )
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                IdentityResult result =
+                    await _userManager.ChangePasswordAsync(user, userDTO.Password, userDTO.NewPassword);
+                if (result.Succeeded)
+                {
+                    return true;
+                }
+            }
+            return false;
 
+        }
+        public async Task<(bool,UserDTO)> ChangeInfo(string userId, UserDTO userDTO)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null) 
+            {
+                user.UserName = userDTO.Name;
+                user.Email = userDTO.Email;
+                user.PhoneNumber = userDTO.PhoneNumber;
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    var userDto = _mapper.Map<User, UserDTO>(user);
+                    return (true, userDto);
+                }
+                else return (false, userDTO);
+            }
+            else return (false, userDTO);
+        }
+
+        public async Task<UserDTO> GetInfo (string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+        
+            var userDto = _mapper.Map<User, UserDTO>(user);
+
+            return userDto;
+        }
         public async Task<bool> Create(UserDTO userDto)
         {                                 
             var user = _mapper.Map<UserDTO, User>(userDto);
@@ -45,6 +90,7 @@ namespace BLL.Services
             var userCreateResult = await _userManager.CreateAsync(user, userDto.Password);
                     
             await _userManager.AddToRoleAsync(user, userDto.Role);
+            await _userManager.SetPhoneNumberAsync(user, userDto.PhoneNumber);
             await _userManager.UpdateAsync(user);
 
 

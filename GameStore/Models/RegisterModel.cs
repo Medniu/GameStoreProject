@@ -15,10 +15,11 @@ namespace GameStore.Models
         [Display(Name = "email", Description = "Email address")]
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; }        
 
-        [Required]        
-        public string Address { get; set; }
+        [Required]
+        [RegularExpression(@"^(375)?(25|33|44|29)\d{7}$")]        
+        public string PhoneNumber { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

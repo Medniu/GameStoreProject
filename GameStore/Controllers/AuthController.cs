@@ -21,7 +21,7 @@ namespace GameStore.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {     
-        private IUserService _userService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
         public AuthController(IUserService userService, IMapper mapper)
         {
