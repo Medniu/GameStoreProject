@@ -33,34 +33,11 @@ namespace GameStore
 
        
         public void ConfigureServices(IServiceCollection services)
-        {           
-            services.AddControllers();
-
+        {                       
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
-            
-            services
-                .AddAuthorization(options =>
-                {                  
-                })
-                .AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(options =>
-                {
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidIssuer = jwtSettings.Issuer,
-                        ValidAudience = jwtSettings.Issuer,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
-                        ClockSkew = TimeSpan.Zero
-                    };
-                });
-            
+
+            services.AddControllers();                    
 
             var dataAssemblyName = typeof(ApplicationDbContext).Assembly.GetName().Name;
             services.AddDbContext<ApplicationDbContext>(options => 
@@ -71,8 +48,7 @@ namespace GameStore
                                                      
 
             services.AddIdentity<User, Role>(options =>
-            {               
-                options.SignIn.RequireConfirmedAccount = true;
+            {                               
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = true;
@@ -92,6 +68,32 @@ namespace GameStore
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Game Store", Version = "v1" });    
             });
             services.AddAutoMapper(typeof(Startup));
+            
+
+            services
+                .AddAuthorization(options =>
+                {
+                    
+                })
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Issuer,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
@@ -112,7 +114,7 @@ namespace GameStore
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthorization();                       
 
             app.UseEndpoints(endpoints =>
             {

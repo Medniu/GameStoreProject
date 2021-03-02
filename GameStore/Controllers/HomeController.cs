@@ -12,12 +12,12 @@ namespace GameStore.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class HomeController : ControllerBase
     {       
         [HttpGet]
-        [Route("getInfo")]        
-        //[Authorize(Roles = UserRoles.Administrator.ToString())]
-        [Authorize(Roles = "admin")]
+        [Route("getInfo")]               
+        [Authorize(Roles = "admin")]        
         public ActionResult<string> GetInfo()
         {
             return "Hello World";
