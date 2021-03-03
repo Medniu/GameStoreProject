@@ -10,8 +10,7 @@ using GameStore.Models;
 namespace GameStore.Mapping
 {
     public class MappingProfile : Profile
-    {
-        // Domain to Resource
+    {        
         public MappingProfile()
         {
 

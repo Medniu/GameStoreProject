@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BLL.DTO;
 using BLL.Interfaces;
+using GameStore.Helper;
+using GameStore.Interfaces;
 using GameStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -21,15 +23,17 @@ namespace GameStore.Controllers
 
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        public UserController(IUserService userService, IMapper mapper)
+        private readonly IUserHelper _userHelper;
+        public UserController(IUserService userService, IMapper mapper, IUserHelper userHelper)
         {
             _userService = userService;
             _mapper = mapper;
+            _userHelper = userHelper;
         }
         [HttpGet]
         public async Task<IActionResult> GetUserInfo()
-        {
-            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        {          
+            string userId = _userHelper.GetUserId();
 
             var result = await _userService.GetInfo(userId);
 
@@ -41,36 +45,56 @@ namespace GameStore.Controllers
         [HttpPut]
         public async Task<IActionResult> ChangeUserInfo([FromBody] UserProfile userProfile)
         {
-            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (ModelState.IsValid)
+            {                              
+                string userId = _userHelper.GetUserId();
 
-            var userDto = _mapper.Map<UserProfile, UserDTO>(userProfile);
+                var userDto = _mapper.Map<UserProfile, UserDTO>(userProfile);
 
-            var result = await _userService.ChangeInfo(userId, userDto);
+                var result = await _userService.ChangeInfo(userId, userDto);
 
-            userProfile = _mapper.Map<UserDTO, UserProfile>(result.Item2);
+                userProfile = _mapper.Map<UserDTO, UserProfile>(result.UserDTO);
 
-            if (result.Item1 == true)
-            {
-                return new JsonResult(userProfile);
+                if (result.Result == true)
+                {
+                    return new JsonResult(userProfile);
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
-            return Problem();
+            else
+            {
+                return BadRequest(ModelState);
+            }            
         }
 
 
         [HttpPost]
         [Route("password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel passwordModel)
-        {
-            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        {          
+            string userId = _userHelper.GetUserId();
 
-            var userDto = _mapper.Map<ChangePasswordModel, UserDTO>(passwordModel);
-
-            var result = await _userService.ChangePassword(userId, userDto);
-            if (result == true)
+            if (ModelState.IsValid)
             {
-                return Ok();
-            }
-            else return Problem();
-        } 
+                var userDto = _mapper.Map<ChangePasswordModel, UserDTO>(passwordModel);
+
+                var result = await _userService.ChangePassword(userId, userDto);
+                if (result == true)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }            
+            else
+            {
+                return BadRequest(ModelState);
+            }            
+        }        
     }
 }

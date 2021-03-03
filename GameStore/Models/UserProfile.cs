@@ -8,6 +8,7 @@ namespace GameStore.Models
 {
     public class UserProfile
     {
+        [Required]
         public string Name { get; set; }
 
         [Required]

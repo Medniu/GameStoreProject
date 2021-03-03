@@ -15,9 +15,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using System.Web.Http.Results;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Http;
 
 namespace BLL.Services
 {
@@ -47,18 +44,26 @@ namespace BLL.Services
             {
                 IdentityResult result =
                     await _userManager.ChangePasswordAsync(user, userDTO.Password, userDTO.NewPassword);
+
                 if (result.Succeeded)
                 {
                     return true;
                 }
+                else
+                { 
+                    return false;
+                }
             }
-            return false;
-
+            else 
+            { 
+                return false;
+            }                 
         }
-        public async Task<(bool,UserDTO)> ChangeInfo(string userId, UserDTO userDTO)
+        public async Task<ResultDTO> ChangeInfo(string userId, UserDTO userDTO)
         {
+            var resultDto = new ResultDTO();
             var user = await _userManager.FindByIdAsync(userId);
-            if (user != null) 
+            if (user != null)
             {
                 user.UserName = userDTO.Name;
                 user.Email = userDTO.Email;
@@ -68,20 +73,32 @@ namespace BLL.Services
                 if (result.Succeeded)
                 {
                     var userDto = _mapper.Map<User, UserDTO>(user);
-                    return (true, userDto);
+                    resultDto.Result = true;
+                    resultDto.UserDTO = userDto;
+                    return resultDto;
                 }
-                else return (false, userDTO);
+                else 
+                {
+                    resultDto.Result = false;
+                    resultDto.UserDTO = null;
+                    return resultDto; 
+                }
             }
-            else return (false, userDTO);
+            else 
+            {
+                resultDto.Result = false;
+                resultDto.UserDTO = null;
+                return resultDto;
+            }
         }
 
         public async Task<UserDTO> GetInfo (string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-        
-            var userDto = _mapper.Map<User, UserDTO>(user);
 
-            return userDto;
+            var userDto = _mapper.Map<User, UserDTO>(user);
+                           
+            return  userDto;                   
         }
         public async Task<bool> Create(UserDTO userDto)
         {                                 
@@ -95,20 +112,25 @@ namespace BLL.Services
 
 
             if (userCreateResult.Succeeded)
-            {              
-                await _emailService.SendEmailAsync("Registration", $"You have successfully registered");
+            {
+                await _emailService.SendEmailAsync(userDto.Email, "Registration", $"You have successfully registered");
                 return true;
             }
-
-            return false;       
+            else 
+            {
+                return false;
+            }       
         }      
-        public async Task<(bool,string)> Authorize(UserDTO userDTO)
-        {                  
+        public async Task<ResultDTO> Authorize(UserDTO userDTO)
+        {
+            var resultDto = new ResultDTO();
             var user = _userManager.Users.SingleOrDefault(u => u.Email == userDTO.Email);
 
             if (user is null)
             {
-                return (false,string.Empty);
+                resultDto.Result = false;
+                resultDto.JwtToken = string.Empty;
+                return resultDto;
             }
 
             var userSigninResult = await _userManager.CheckPasswordAsync(user, userDTO.Password);
@@ -116,9 +138,16 @@ namespace BLL.Services
             if (userSigninResult)
             {
                 var roles = await _userManager.GetRolesAsync(user);
-                return (true, GenerateJwt(user, roles));                
+                resultDto.Result = true;
+                resultDto.JwtToken = GenerateJwt(user,roles);
+                return resultDto;
             }
-            return (false,string.Empty);
+            else
+            {
+                resultDto.Result = false;
+                resultDto.JwtToken = string.Empty;
+                return resultDto;
+            }
         }     
         public void Dispose()
         {

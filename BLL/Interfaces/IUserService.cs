@@ -12,9 +12,9 @@ namespace BLL.Interfaces
     public interface IUserService
     {
         Task<bool> ChangePassword(string userId, UserDTO userDTO);
-        Task<(bool, UserDTO)> ChangeInfo(string userId, UserDTO userDTO);
+        Task<ResultDTO> ChangeInfo(string userId, UserDTO userDTO);
         Task<UserDTO> GetInfo(string userId);
         Task<bool> Create(UserDTO userDto);
-        Task<(bool,string)> Authorize(UserDTO userDTO);       
+        Task<ResultDTO> Authorize(UserDTO userDTO);       
     }
 }

@@ -1,7 +1,6 @@
 ﻿using BLL.DTO;
 using BLL.Interfaces;
 using BLL.Services;
-using DAL.Data;
 using System.Web;
 using GameStore.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -41,18 +40,18 @@ namespace GameStore.Controllers
               
                 var result = await _userService.Authorize(userDto);
 
-                if (result.Item1)
+                if (result.Result)
                 {
-                    return Ok(result.Item2);
+                    return Ok(result.JwtToken);
                 }
                 else
                 {
-                    return Problem("401");
+                    return BadRequest();
                 }
             }
             else
             {
-                return Problem("401");
+                return BadRequest(ModelState);
             }
 
         }
@@ -75,13 +74,13 @@ namespace GameStore.Controllers
                 }
                 else
                 {
-                    return Problem("400");                  
+                    return BadRequest(ModelState);                  
                 }
             }
 
             else
             {
-                return Problem("400");
+                return BadRequest(ModelState);
             }
         }            
     }

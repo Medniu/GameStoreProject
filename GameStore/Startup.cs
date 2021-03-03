@@ -19,6 +19,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using BLL.Settings;
+using Microsoft.AspNetCore.Http;
+using GameStore.Helper;
+using GameStore.Interfaces;
 
 namespace GameStore
 {
@@ -33,9 +36,13 @@ namespace GameStore
 
        
         public void ConfigureServices(IServiceCollection services)
-        {                       
+        {
+            services.AddOptions();
+
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
+
+            services.Configure<EmailSettings>(Configuration.GetSection("Email"));
 
             services.AddControllers();                    
 
@@ -61,7 +68,7 @@ namespace GameStore
             
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailService, EmailService>();
-
+            services.AddTransient<IUserHelper, UserHelper>();
 
             services.AddSwaggerGen(options =>
             {
@@ -92,8 +99,7 @@ namespace GameStore
                         ClockSkew = TimeSpan.Zero
                     };
                 });
-
-
+            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
@@ -149,5 +155,6 @@ namespace GameStore
                 }
             }                               
         }
+      
     }
 }

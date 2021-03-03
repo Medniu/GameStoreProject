@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace GameStore.Controllers
 {
-   
-
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
