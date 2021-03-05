@@ -27,8 +27,9 @@ namespace BLL.Services
         private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
 
-        public UserService(UserManager<User> userManager, RoleManager<Role> roleManager, ApplicationDbContext dbContext,
-                           IOptionsSnapshot<JwtSettings> jwtSettings, IEmailService emailService, IMapper mapper)
+        public UserService( UserManager<User> userManager, RoleManager<Role> roleManager,
+                            ApplicationDbContext dbContext, IOptionsSnapshot<JwtSettings> jwtSettings,
+                            IEmailService emailService, IMapper mapper)
         {
             _applicationDbContext = dbContext;
             _userManager = userManager;
@@ -91,7 +92,6 @@ namespace BLL.Services
                 return resultDto;
             }
         }
-
         public async Task<UserDTO> GetInfo (string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);

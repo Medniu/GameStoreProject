@@ -5,11 +5,7 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 namespace GameStore.Helper
-{
-    //public interface IUserHelper
-    //{
-    //    string GetUserId();
-    //}
+{   
     public class UserHelper : IUserHelper
     {
         IHttpContextAccessor httpContextAccessor;

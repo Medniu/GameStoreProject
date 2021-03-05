@@ -4,14 +4,16 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210303161447_Add product entity")]
+    partial class Addproductentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,176 +50,6 @@ namespace DAL.Migrations
                     b.HasIndex("Name", "Category", "DateCreated", "TotalRating");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Category = 0,
-                            DateCreated = new DateTime(1996, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Left 4 Dead",
-                            TotalRating = 9.0m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Category = 0,
-                            DateCreated = new DateTime(2018, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Battlefield",
-                            TotalRating = 7.3m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Category = 0,
-                            DateCreated = new DateTime(2015, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Call of Duty",
-                            TotalRating = 8.1m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Category = 1,
-                            DateCreated = new DateTime(2020, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Fifa 21",
-                            TotalRating = 9.5m
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Category = 1,
-                            DateCreated = new DateTime(2020, 7, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Pes 21",
-                            TotalRating = 9.2m
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Category = 1,
-                            DateCreated = new DateTime(2015, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Rocket League",
-                            TotalRating = 8.2m
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Category = 1,
-                            DateCreated = new DateTime(2020, 3, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "NBA 2k21",
-                            TotalRating = 7.2m
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Category = 1,
-                            DateCreated = new DateTime(2017, 6, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Drift 5",
-                            TotalRating = 8.2m
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Category = 2,
-                            DateCreated = new DateTime(2005, 10, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Skyrim",
-                            TotalRating = 9.5m
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Category = 2,
-                            DateCreated = new DateTime(2017, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Fallout 3",
-                            TotalRating = 9.5m
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Category = 2,
-                            DateCreated = new DateTime(2015, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "The Witcher 3",
-                            TotalRating = 9.9m
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Category = 2,
-                            DateCreated = new DateTime(2020, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Cyberpunk 2077",
-                            TotalRating = 7.5m
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Category = 2,
-                            DateCreated = new DateTime(2012, 4, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Mount and Blade",
-                            TotalRating = 9.0m
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Category = 2,
-                            DateCreated = new DateTime(2015, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Dark Souls 3",
-                            TotalRating = 9.5m
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Category = 2,
-                            DateCreated = new DateTime(2007, 7, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Overlord",
-                            TotalRating = 9.1m
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Category = 3,
-                            DateCreated = new DateTime(2005, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "WarCraft 3",
-                            TotalRating = 9.7m
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Category = 3,
-                            DateCreated = new DateTime(2003, 8, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "StarCraft 2",
-                            TotalRating = 9.5m
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Category = 3,
-                            DateCreated = new DateTime(2002, 9, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Stronghold Crusader",
-                            TotalRating = 9.7m
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Category = 3,
-                            DateCreated = new DateTime(2007, 10, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Heroes of Might and Magic 5",
-                            TotalRating = 9.9m
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Category = 4,
-                            DateCreated = new DateTime(2000, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Syberia",
-                            TotalRating = 6.3m
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Category = 4,
-                            DateCreated = new DateTime(2012, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Sherlock Holmes",
-                            TotalRating = 9.9m
-                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Role", b =>

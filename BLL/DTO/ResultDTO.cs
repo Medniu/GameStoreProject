@@ -8,6 +8,6 @@ namespace BLL.DTO
     {
         public bool Result { get; set; }
         public UserDTO? UserDTO { get; set; }
-        public string? JwtToken { get; set; }
+        public string? JwtToken { get; set; }       
     }
 }

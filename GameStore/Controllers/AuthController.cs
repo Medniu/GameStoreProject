@@ -60,8 +60,7 @@ namespace GameStore.Controllers
         [Route("signUp")]
         [AllowAnonymous]
         public async Task<IActionResult> SignUp([FromBody]RegisterModel registerModel)
-        {
-
+        {           
             if (ModelState.IsValid)
             {
                 var userDto = _mapper.Map<RegisterModel, UserDTO>(registerModel);             

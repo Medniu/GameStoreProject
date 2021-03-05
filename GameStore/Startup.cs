@@ -22,6 +22,8 @@ using BLL.Settings;
 using Microsoft.AspNetCore.Http;
 using GameStore.Helper;
 using GameStore.Interfaces;
+using DAL.Interfaces;
+using DAL.Repository;
 
 namespace GameStore
 {
@@ -68,6 +70,10 @@ namespace GameStore
             
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IGamesService, GamesService>();
+
+            services.AddScoped<IProductRepository, ProductRepository>();
+
             services.AddTransient<IUserHelper, UserHelper>();
 
             services.AddSwaggerGen(options =>
