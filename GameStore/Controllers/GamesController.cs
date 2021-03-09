@@ -61,7 +61,7 @@ namespace GameStore.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create(CreateGameModel gameModel)
+        public async Task<IActionResult> Create([FromBody] CreateGameModel gameModel)
         {
             if (ModelState.IsValid)
             {
