@@ -49,6 +49,10 @@ namespace DAL.Entities
         [Required]
         [Column("TotalRating", TypeName = "decimal(5,1)")]
         public decimal TotalRating { get; set; }
+
+        [Required]
+        [Column("IsDeleted")]
+        public bool IsDeleted { get; set; }
     }
 
     public enum Categories

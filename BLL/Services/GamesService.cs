@@ -49,7 +49,8 @@ namespace BLL.Services
                 Logo = s.Logo,
                 Price = s.Price,
                 Background = s.Background,
-                Rating = s.Rating.ToString()
+                Rating = s.Rating.ToString(),
+                Count = s.Count
             });
 
             return listOfGames;

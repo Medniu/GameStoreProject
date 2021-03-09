@@ -26,6 +26,7 @@ namespace DAL.Repository
         {
             var categoryTable = context.Products
                     .AsEnumerable()
+                    .Where(w =>w.IsDeleted != true)
                     .GroupBy(g => g.Category)
                     .OrderByDescending(g => g.Count())
                     .Select(s => new CategoryInformation { Categories = s.Key.ToString(), AmountOfGames = s.Count() })
@@ -37,6 +38,7 @@ namespace DAL.Repository
         {                  
             var listOfGames = context.Products               
                 .Where(w => w.Name.Contains(searchQuery.Term))
+                .Where(w =>w.IsDeleted !=true)
                 .Select(s => new GamesInformation
                 {
                     Name = s.Name,
@@ -46,7 +48,8 @@ namespace DAL.Repository
                     Logo = s.Logo,
                     Price = s.Price,
                     Background = s.Background,
-                    Rating = s.Rating                    
+                    Rating = s.Rating,
+                    Count = s.Count                    
                 })
                 .Take(searchQuery.Limit);
 
@@ -55,7 +58,9 @@ namespace DAL.Repository
 
         public async Task<Product> FindById(int id)
         {
-            Product gameInfo = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            Product gameInfo = await context.Products
+                .Where(w => w.IsDeleted != true)
+                .FirstOrDefaultAsync(p => p.Id == id);
             
             return gameInfo;
         }
@@ -75,9 +80,9 @@ namespace DAL.Repository
         {
             var product = await context.Products.FirstOrDefaultAsync(p => p.Id == id); 
 
-            if (product != null)
+            if (product != null && product.IsDeleted == false)
             {
-                context.Products.Remove(product);
+                product.IsDeleted = true;               
                 await context.SaveChangesAsync();
                 return true;
             }
@@ -87,7 +92,7 @@ namespace DAL.Repository
         public async Task<Product> Edit(int id, GamesInformation gamesInformation)
         {            
             var product = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
-            if (product != null)
+            if (product != null && product.IsDeleted != true)
             {
                 UpdateProperties(product, gamesInformation);
                 context.Products.Update(product);
