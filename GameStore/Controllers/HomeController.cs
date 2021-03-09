@@ -15,7 +15,7 @@ namespace GameStore.Controllers
     {       
         [HttpGet]
         [Route("getInfo")]               
-        [Authorize(Roles = "admin")]        
+        [Authorize(Roles = "Admin")]        
         public ActionResult<string> GetInfo()
         {
             return "Hello World";

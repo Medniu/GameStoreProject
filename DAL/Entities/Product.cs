@@ -23,11 +23,31 @@ namespace DAL.Entities
         public Categories Category { get; set; }
 
         [Required]
+        [Column ("AgeRating", TypeName = "int")]
+        public Rating Rating { get; set; }
+        
+        [Required]
+        [Column ("Logo", TypeName = "varchar(200)")]
+        public string Logo { get; set; }
+
+        [Required]
+        [Column("BackGround", TypeName = "varchar(200)")]
+        public string Background { get; set; }
+
+        [Required]
+        [Column("Price", TypeName ="decimal(5,2)")]
+        public decimal Price { get; set; }
+
+        [Required]
+        [Column("Count")]
+        public int Count { get; set; }
+
+        [Required]
         [Column("DateOfCreation" , TypeName ="date")]
         public DateTime DateCreated { get; set; }
 
         [Required]
-        [Column("TotalRating",TypeName = "decimal")]
+        [Column("TotalRating", TypeName = "decimal(5,1)")]
         public decimal TotalRating { get; set; }
     }
 
@@ -38,5 +58,11 @@ namespace DAL.Entities
         RPG,
         Strategy,
         Quest
+    }
+    public enum Rating
+    {
+        SixPlus = 6,
+        TwelvePlus = 12,
+        EighteenPlus = 18
     }
 }

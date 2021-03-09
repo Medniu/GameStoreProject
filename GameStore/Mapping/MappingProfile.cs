@@ -58,6 +58,56 @@ namespace GameStore.Mapping
                 .ForMember(u => u.Limit, opt => opt.MapFrom(ur => ur.Limit))
                 .ForMember(u => u.Term, opt => opt.MapFrom(ur => ur.Term));
 
+            CreateMap<Product, GamesInfoDTO>()
+                .ForMember(u => u.Name, opt => opt.MapFrom(ur => ur.Name))
+                .ForMember(u => u.Logo, opt => opt.MapFrom(ur => ur.Logo))
+                .ForMember(u => u.Price, opt => opt.MapFrom(ur => ur.Price))
+                .ForMember(u => u.Rating, opt => opt.MapFrom(ur => ur.Rating))
+                .ForMember(u => u.TotalRating, opt => opt.MapFrom(ur => ur.TotalRating))
+                .ForMember(u => u.DateCreated, opt => opt.MapFrom(ur => ur.DateCreated))
+                .ForMember(u => u.Category, opt => opt.MapFrom(ur => ur.Category))
+                .ForMember(u => u.Background, opt => opt.MapFrom(ur => ur.Background));
+
+            CreateMap<CreateGameModel, GamesInfoDTO>()
+                .ForMember(u => u.Name, opt => opt.MapFrom(ur => ur.Name))
+                .ForMember(u => u.Logo, opt => opt.MapFrom(ur => ur.Logo))
+                .ForMember(u => u.Price, opt => opt.MapFrom(ur => ur.Price))
+                .ForMember(u => u.Rating, opt => opt.MapFrom(ur => ur.Rating))
+                .ForMember(u => u.TotalRating, opt => opt.MapFrom(ur => ur.TotalRating))
+                .ForMember(u => u.DateCreated, opt => opt.MapFrom(ur => ur.DateCreated))
+                .ForMember(u => u.Category, opt => opt.MapFrom(ur => ur.Category))
+                .ForMember(u => u.Background, opt => opt.MapFrom(ur => ur.Background));
+
+            CreateMap<GamesInfoDTO, GamesInformation>()
+               .ForMember(u => u.Name, opt => opt.MapFrom(ur => ur.Name))
+               .ForMember(u => u.Logo, opt => opt.MapFrom(ur => ur.Logo))
+               .ForMember(u => u.Price, opt => opt.MapFrom(ur => ur.Price))
+               .ForMember(u => u.Rating, opt => opt.MapFrom(ur => ur.Rating))
+               .ForMember(u => u.TotalRating, opt => opt.MapFrom(ur => ur.TotalRating))
+               .ForMember(u => u.DateCreated, opt => opt.MapFrom(ur => ur.DateCreated))
+               .ForMember(u => u.Category, opt => opt.MapFrom(ur => ur.Category))
+               .ForMember(u => u.Background, opt => opt.MapFrom(ur => ur.Background));
+
+            CreateMap<GamesInformation, Product>()
+               .ForMember(u => u.Name, opt => opt.MapFrom(ur => ur.Name))
+               .ForMember(u => u.Logo, opt => opt.MapFrom(ur => ur.Logo))
+               .ForMember(u => u.Price, opt => opt.MapFrom(ur => ur.Price))
+               .ForMember(u => u.Rating, opt => opt.MapFrom(ur => ur.Rating))
+               .ForMember(u => u.TotalRating, opt => opt.MapFrom(ur => ur.TotalRating))
+               .ForMember(u => u.DateCreated, opt => opt.MapFrom(ur => ur.DateCreated))
+               .ForMember(u => u.Category, opt => opt.MapFrom(ur => ur.Category))
+               .ForMember(u => u.Background, opt => opt.MapFrom(ur => ur.Background));
+
+            CreateMap<EditGameModel, GamesInfoDTO>()
+                .ForMember(u => u.Name, opt => opt.MapFrom(ur => ur.Name))
+                .ForMember(u => u.Logo, opt => opt.MapFrom(ur => ur.Logo))
+                .ForMember(u => u.Price, opt => opt.MapFrom(ur => ur.Price))
+                .ForMember(u => u.Rating, opt => opt.MapFrom(ur => ur.Rating))
+                .ForMember(u => u.TotalRating, opt => opt.MapFrom(ur => ur.TotalRating))
+                .ForMember(u => u.DateCreated, opt => opt.MapFrom(ur => ur.DateCreated))
+                .ForMember(u => u.Category, opt => opt.MapFrom(ur => ur.Category))
+                .ForMember(u => u.Background, opt => opt.MapFrom(ur => ur.Background));
+
         }
     }
 }

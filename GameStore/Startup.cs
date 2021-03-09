@@ -159,7 +159,7 @@ namespace GameStore
                    
                     roleResult = await _roleManager.CreateAsync(new Role(roleName));
                 }
-            }                               
+            }                             
         }
       
     }

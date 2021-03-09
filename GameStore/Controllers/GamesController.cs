@@ -29,17 +29,17 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetTopCategories()
         {
-            var result =  await _gamesService.GetTopCategories();
-           
+            var result = await _gamesService.GetTopCategories();
+
             return new JsonResult(result);
         }
-      
-        
-        [HttpGet("search")]                       
+
+
+        [HttpGet("search")]
         [AllowAnonymous]
         public async Task<IActionResult> SearchGames([FromQuery] SearchRequestModel searchRequest)
         {
-            if (searchRequest.Limit == null || searchRequest.Limit <=0)
+            if (searchRequest.Limit == null || searchRequest.Limit <= 0)
             {
                 searchRequest.Limit = 10;
             }
@@ -48,7 +48,59 @@ namespace GameStore.Controllers
             var result = await _gamesService.FindGameByName(searchDto);
 
             return new JsonResult(result);
-                                    
-        }      
+        }
+
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> FindGame(int id)
+        {
+            var result = await _gamesService.FindGameById(id);
+
+            return new JsonResult(result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create(CreateGameModel gameModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var newGame = _mapper.Map<CreateGameModel, GamesInfoDTO>(gameModel);
+                var result = await _gamesService.CreateGame(newGame);
+                return new JsonResult(result);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _gamesService.DeleteGameById(id);
+            if (result == true)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit([FromBody] EditGameModel gameModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var newGameInfo = _mapper.Map<EditGameModel, GamesInfoDTO>(gameModel);
+                var result = await _gamesService.EditGame(gameModel.Id, newGameInfo);
+                return new JsonResult(result);
+            }
+            return BadRequest(ModelState);
+        }     
     }
 }

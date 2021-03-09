@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210303173105_Add data")]
-    partial class Adddata
+    [Migration("20210306173407_Add Full Info")]
+    partial class AddFullInfo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,21 +28,43 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Background")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("BackGround");
+
                     b.Property<int>("Category")
                         .HasColumnType("int")
                         .HasColumnName("CategoryIndex");
 
+                    b.Property<int>("Count")
+                        .HasColumnType("int")
+                        .HasColumnName("Count");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("date")
                         .HasColumnName("DateOfCreation");
+
+                    b.Property<string>("Logo")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("Logo");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
                         .HasColumnName("ProductName");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("Price");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int")
+                        .HasColumnName("AgeRating");
+
                     b.Property<decimal>("TotalRating")
-                        .HasColumnType("decimal")
+                        .HasColumnType("decimal(5,1)")
                         .HasColumnName("TotalRating");
 
                     b.HasKey("Id");
@@ -55,169 +77,274 @@ namespace DAL.Migrations
                         new
                         {
                             Id = 1,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/Left4DeadBack.jpg",
                             Category = 0,
+                            Count = 100,
                             DateCreated = new DateTime(1996, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/Left4DeadLogo.jpg",
                             Name = "Left 4 Dead",
+                            Price = 29.99m,
+                            Rating = 18,
                             TotalRating = 9.0m
                         },
                         new
                         {
                             Id = 2,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/BtfBack.png",
                             Category = 0,
+                            Count = 200,
                             DateCreated = new DateTime(2018, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/BtfLogo.jpg",
                             Name = "Battlefield",
+                            Price = 19.99m,
+                            Rating = 18,
                             TotalRating = 7.3m
                         },
                         new
                         {
                             Id = 3,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/CodBack.jpg",
                             Category = 0,
+                            Count = 150,
                             DateCreated = new DateTime(2015, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/CoDLogo.jpg",
                             Name = "Call of Duty",
+                            Price = 39.99m,
+                            Rating = 18,
                             TotalRating = 8.1m
                         },
                         new
                         {
                             Id = 4,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/FifaBack.jpg",
                             Category = 1,
+                            Count = 100,
                             DateCreated = new DateTime(2020, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/FifaLogo.jpg",
                             Name = "Fifa 21",
+                            Price = 9.99m,
+                            Rating = 18,
                             TotalRating = 9.5m
                         },
                         new
                         {
                             Id = 5,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/PesBack.jpeg",
                             Category = 1,
+                            Count = 50,
                             DateCreated = new DateTime(2020, 7, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/PesLogo.jpg",
                             Name = "Pes 21",
+                            Price = 29.99m,
+                            Rating = 6,
                             TotalRating = 9.2m
                         },
                         new
                         {
                             Id = 6,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/RocketLeagback.jpg",
                             Category = 1,
+                            Count = 100,
                             DateCreated = new DateTime(2015, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/RocketLeagLogo.jpg",
                             Name = "Rocket League",
+                            Price = 19.99m,
+                            Rating = 12,
                             TotalRating = 8.2m
                         },
                         new
                         {
                             Id = 7,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/Nbaback.jpg",
                             Category = 1,
+                            Count = 100,
                             DateCreated = new DateTime(2020, 3, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/NbaLogo.jpg",
                             Name = "NBA 2k21",
+                            Price = 24.99m,
+                            Rating = 12,
                             TotalRating = 7.2m
                         },
                         new
                         {
                             Id = 8,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/DriftBack.jpg",
                             Category = 1,
+                            Count = 100,
                             DateCreated = new DateTime(2017, 6, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/DriftLogo.jpg",
                             Name = "Drift 5",
+                            Price = 23.99m,
+                            Rating = 12,
                             TotalRating = 8.2m
                         },
                         new
                         {
                             Id = 9,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/SkyrimBack.jpg",
                             Category = 2,
+                            Count = 1000,
                             DateCreated = new DateTime(2005, 10, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/SkyrimLogo.jpg",
                             Name = "Skyrim",
+                            Price = 19.99m,
+                            Rating = 18,
                             TotalRating = 9.5m
                         },
                         new
                         {
                             Id = 10,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/Fallback.jpg",
                             Category = 2,
+                            Count = 100,
                             DateCreated = new DateTime(2017, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/FallLogo.jpg",
                             Name = "Fallout 3",
+                            Price = 29.99m,
+                            Rating = 18,
                             TotalRating = 9.5m
                         },
                         new
                         {
                             Id = 11,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/TheWitcherback.jpg",
                             Category = 2,
+                            Count = 100,
                             DateCreated = new DateTime(2015, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/TheWitcherLogo.jpg",
                             Name = "The Witcher 3",
+                            Price = 49.99m,
+                            Rating = 18,
                             TotalRating = 9.9m
                         },
                         new
                         {
                             Id = 12,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/CyberBack.jpg",
                             Category = 2,
+                            Count = 100,
                             DateCreated = new DateTime(2020, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/CyberLogo.jpg",
                             Name = "Cyberpunk 2077",
+                            Price = 19.99m,
+                            Rating = 18,
                             TotalRating = 7.5m
                         },
                         new
                         {
                             Id = 13,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/Mountback.jpg",
                             Category = 2,
+                            Count = 300,
                             DateCreated = new DateTime(2012, 4, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/MountLogo.jpg",
                             Name = "Mount and Blade",
+                            Price = 39.99m,
+                            Rating = 18,
                             TotalRating = 9.0m
                         },
                         new
                         {
                             Id = 14,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/DarkBack.jpg",
                             Category = 2,
+                            Count = 200,
                             DateCreated = new DateTime(2015, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/DarkLogo.jpg",
                             Name = "Dark Souls 3",
+                            Price = 19.99m,
+                            Rating = 18,
                             TotalRating = 9.5m
                         },
                         new
                         {
                             Id = 15,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/OverLordBack.jpg",
                             Category = 2,
+                            Count = 100,
                             DateCreated = new DateTime(2007, 7, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/OverLordLogo.jpg",
                             Name = "Overlord",
+                            Price = 9.99m,
+                            Rating = 6,
                             TotalRating = 9.1m
                         },
                         new
                         {
                             Id = 16,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/WarBack.jpg",
                             Category = 3,
+                            Count = 30,
                             DateCreated = new DateTime(2005, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/WarLogo.jpg",
                             Name = "WarCraft 3",
+                            Price = 19.99m,
+                            Rating = 12,
                             TotalRating = 9.7m
                         },
                         new
                         {
                             Id = 17,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/Starback.jpg",
                             Category = 3,
+                            Count = 100,
                             DateCreated = new DateTime(2003, 8, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/StarLogo.jpg",
                             Name = "StarCraft 2",
+                            Price = 29.99m,
+                            Rating = 12,
                             TotalRating = 9.5m
                         },
                         new
                         {
                             Id = 18,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/StrongBack.jpg",
                             Category = 3,
+                            Count = 100,
                             DateCreated = new DateTime(2002, 9, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/StrongLogo.jpg",
                             Name = "Stronghold Crusader",
+                            Price = 29.99m,
+                            Rating = 6,
                             TotalRating = 9.7m
                         },
                         new
                         {
                             Id = 19,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/Heroesback.jpg",
                             Category = 3,
+                            Count = 100,
                             DateCreated = new DateTime(2007, 10, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/HeroesLogo.jpg",
                             Name = "Heroes of Might and Magic 5",
+                            Price = 29.99m,
+                            Rating = 12,
                             TotalRating = 9.9m
                         },
                         new
                         {
                             Id = 20,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/SyberiaBack.jpg",
                             Category = 4,
+                            Count = 100,
                             DateCreated = new DateTime(2000, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/SyberiaLogo.jpg",
                             Name = "Syberia",
+                            Price = 4.99m,
+                            Rating = 6,
                             TotalRating = 6.3m
                         },
                         new
                         {
                             Id = 21,
+                            Background = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/Sherlockback.jpg",
                             Category = 4,
+                            Count = 100,
                             DateCreated = new DateTime(2012, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/SherlockLogo.jpg",
                             Name = "Sherlock Holmes",
+                            Price = 29.99m,
+                            Rating = 6,
                             TotalRating = 9.9m
                         });
                 });
