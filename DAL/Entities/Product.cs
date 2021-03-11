@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace DAL.Entities
 {
    
-    [Index(nameof(Name), nameof(Category), nameof(DateCreated), nameof(TotalRating))]
+    [Index(nameof(Name), nameof(Category), nameof(DateCreated), nameof(Rating), nameof(Price))]
     public class Product
     {
         [Key]
@@ -46,9 +47,11 @@ namespace DAL.Entities
         [Column("DateOfCreation" , TypeName ="date")]
         public DateTime DateCreated { get; set; }
 
-        [Required]
+        public ICollection<ProductRating> Ratings { get; set; }
+         
         [Column("TotalRating", TypeName = "decimal(5,1)")]
-        public decimal TotalRating { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public decimal? TotalRating { get; private set; }
 
         [Required]
         [Column("IsDeleted")]

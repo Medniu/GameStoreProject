@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210309073927_add isDeleted field")]
-    partial class addisDeletedfield
+    [Migration("20210310075350_Computed property")]
+    partial class Computedproperty
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,12 +68,14 @@ namespace DAL.Migrations
                         .HasColumnName("AgeRating");
 
                     b.Property<decimal>("TotalRating")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("decimal(5,1)")
-                        .HasColumnName("TotalRating");
+                        .HasColumnName("TotalRating")
+                        .HasComputedColumnSql("dbo.GetValue(Id)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name", "Category", "DateCreated", "TotalRating");
+                    b.HasIndex("Name", "Category", "DateCreated", "Rating", "Price");
 
                     b.ToTable("Products");
 
@@ -90,7 +92,7 @@ namespace DAL.Migrations
                             Name = "Left 4 Dead",
                             Price = 29.99m,
                             Rating = 18,
-                            TotalRating = 9.0m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -104,7 +106,7 @@ namespace DAL.Migrations
                             Name = "Battlefield",
                             Price = 19.99m,
                             Rating = 18,
-                            TotalRating = 7.3m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -118,7 +120,7 @@ namespace DAL.Migrations
                             Name = "Call of Duty",
                             Price = 39.99m,
                             Rating = 18,
-                            TotalRating = 8.1m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -132,7 +134,7 @@ namespace DAL.Migrations
                             Name = "Fifa 21",
                             Price = 9.99m,
                             Rating = 18,
-                            TotalRating = 9.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -146,7 +148,7 @@ namespace DAL.Migrations
                             Name = "Pes 21",
                             Price = 29.99m,
                             Rating = 6,
-                            TotalRating = 9.2m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -160,7 +162,7 @@ namespace DAL.Migrations
                             Name = "Rocket League",
                             Price = 19.99m,
                             Rating = 12,
-                            TotalRating = 8.2m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -174,7 +176,7 @@ namespace DAL.Migrations
                             Name = "NBA 2k21",
                             Price = 24.99m,
                             Rating = 12,
-                            TotalRating = 7.2m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -188,7 +190,7 @@ namespace DAL.Migrations
                             Name = "Drift 5",
                             Price = 23.99m,
                             Rating = 12,
-                            TotalRating = 8.2m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -202,7 +204,7 @@ namespace DAL.Migrations
                             Name = "Skyrim",
                             Price = 19.99m,
                             Rating = 18,
-                            TotalRating = 9.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -216,7 +218,7 @@ namespace DAL.Migrations
                             Name = "Fallout 3",
                             Price = 29.99m,
                             Rating = 18,
-                            TotalRating = 9.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -230,7 +232,7 @@ namespace DAL.Migrations
                             Name = "The Witcher 3",
                             Price = 49.99m,
                             Rating = 18,
-                            TotalRating = 9.9m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -244,7 +246,7 @@ namespace DAL.Migrations
                             Name = "Cyberpunk 2077",
                             Price = 19.99m,
                             Rating = 18,
-                            TotalRating = 7.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -258,7 +260,7 @@ namespace DAL.Migrations
                             Name = "Mount and Blade",
                             Price = 39.99m,
                             Rating = 18,
-                            TotalRating = 9.0m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -272,7 +274,7 @@ namespace DAL.Migrations
                             Name = "Dark Souls 3",
                             Price = 19.99m,
                             Rating = 18,
-                            TotalRating = 9.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -286,7 +288,7 @@ namespace DAL.Migrations
                             Name = "Overlord",
                             Price = 9.99m,
                             Rating = 6,
-                            TotalRating = 9.1m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -300,7 +302,7 @@ namespace DAL.Migrations
                             Name = "WarCraft 3",
                             Price = 19.99m,
                             Rating = 12,
-                            TotalRating = 9.7m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -314,7 +316,7 @@ namespace DAL.Migrations
                             Name = "StarCraft 2",
                             Price = 29.99m,
                             Rating = 12,
-                            TotalRating = 9.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -328,7 +330,7 @@ namespace DAL.Migrations
                             Name = "Stronghold Crusader",
                             Price = 29.99m,
                             Rating = 6,
-                            TotalRating = 9.7m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -342,7 +344,7 @@ namespace DAL.Migrations
                             Name = "Heroes of Might and Magic 5",
                             Price = 29.99m,
                             Rating = 12,
-                            TotalRating = 9.9m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -356,7 +358,7 @@ namespace DAL.Migrations
                             Name = "Syberia",
                             Price = 4.99m,
                             Rating = 6,
-                            TotalRating = 6.3m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -370,8 +372,37 @@ namespace DAL.Migrations
                             Name = "Sherlock Holmes",
                             Price = 29.99m,
                             Rating = 6,
-                            TotalRating = 9.9m
+                            TotalRating = 0m
                         });
+                });
+
+            modelBuilder.Entity("DAL.Entities.ProductRating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Rating")
+                        .HasColumnType("decimal(5,1)")
+                        .HasColumnName("Rating");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProductRatings");
                 });
 
             modelBuilder.Entity("DAL.Entities.Role", b =>
@@ -569,6 +600,21 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("DAL.Entities.ProductRating", b =>
+                {
+                    b.HasOne("DAL.Entities.Product", null)
+                        .WithMany("Ratings")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.User", null)
+                        .WithMany("Ratings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("DAL.Entities.Role", null)
@@ -618,6 +664,16 @@ namespace DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DAL.Entities.Product", b =>
+                {
+                    b.Navigation("Ratings");
+                });
+
+            modelBuilder.Entity("DAL.Entities.User", b =>
+                {
+                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

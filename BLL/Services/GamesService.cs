@@ -89,5 +89,26 @@ namespace BLL.Services
 
             return updateGameInfo;
         }
+
+        public async Task<decimal?> RateTheGame(GameRatingDTO gameRatingDTO)
+        {
+            var newGameInfo = _mapper.Map<GameRatingDTO,GameRating >(gameRatingDTO);
+
+            var result = await _repository.Rate(newGameInfo);
+
+            return result;
+        }
+
+        public async Task<PageDTO> SortAndFiltrGame(SortAndFiltrDTO filtrDTO)
+        {
+            var searchDto = _mapper.Map<SortAndFiltrDTO, SortAndFiltrInformation>(filtrDTO);
+
+            var result = await _repository.SortAndFiltr(searchDto);
+
+            var pageInfo = _mapper.Map<PageInformation, PageDTO>(result);
+              
+            return pageInfo;
+        }
+
     }
 }

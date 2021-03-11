@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210306173407_Add Full Info")]
-    partial class AddFullInfo
+    [Migration("20210310075056_first migration")]
+    partial class firstmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,10 @@ namespace DAL.Migrations
                         .HasColumnType("date")
                         .HasColumnName("DateOfCreation");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsDeleted");
+
                     b.Property<string>("Logo")
                         .IsRequired()
                         .HasColumnType("varchar(200)")
@@ -69,7 +73,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name", "Category", "DateCreated", "TotalRating");
+                    b.HasIndex("Name", "Category", "DateCreated", "Rating", "Price");
 
                     b.ToTable("Products");
 
@@ -81,11 +85,12 @@ namespace DAL.Migrations
                             Category = 0,
                             Count = 100,
                             DateCreated = new DateTime(1996, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/Left4DeadLogo.jpg",
                             Name = "Left 4 Dead",
                             Price = 29.99m,
                             Rating = 18,
-                            TotalRating = 9.0m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -94,11 +99,12 @@ namespace DAL.Migrations
                             Category = 0,
                             Count = 200,
                             DateCreated = new DateTime(2018, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/BtfLogo.jpg",
                             Name = "Battlefield",
                             Price = 19.99m,
                             Rating = 18,
-                            TotalRating = 7.3m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -107,11 +113,12 @@ namespace DAL.Migrations
                             Category = 0,
                             Count = 150,
                             DateCreated = new DateTime(2015, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/CoDLogo.jpg",
                             Name = "Call of Duty",
                             Price = 39.99m,
                             Rating = 18,
-                            TotalRating = 8.1m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -120,11 +127,12 @@ namespace DAL.Migrations
                             Category = 1,
                             Count = 100,
                             DateCreated = new DateTime(2020, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/FifaLogo.jpg",
                             Name = "Fifa 21",
                             Price = 9.99m,
                             Rating = 18,
-                            TotalRating = 9.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -133,11 +141,12 @@ namespace DAL.Migrations
                             Category = 1,
                             Count = 50,
                             DateCreated = new DateTime(2020, 7, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/PesLogo.jpg",
                             Name = "Pes 21",
                             Price = 29.99m,
                             Rating = 6,
-                            TotalRating = 9.2m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -146,11 +155,12 @@ namespace DAL.Migrations
                             Category = 1,
                             Count = 100,
                             DateCreated = new DateTime(2015, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/RocketLeagLogo.jpg",
                             Name = "Rocket League",
                             Price = 19.99m,
                             Rating = 12,
-                            TotalRating = 8.2m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -159,11 +169,12 @@ namespace DAL.Migrations
                             Category = 1,
                             Count = 100,
                             DateCreated = new DateTime(2020, 3, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/NbaLogo.jpg",
                             Name = "NBA 2k21",
                             Price = 24.99m,
                             Rating = 12,
-                            TotalRating = 7.2m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -172,11 +183,12 @@ namespace DAL.Migrations
                             Category = 1,
                             Count = 100,
                             DateCreated = new DateTime(2017, 6, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/DriftLogo.jpg",
                             Name = "Drift 5",
                             Price = 23.99m,
                             Rating = 12,
-                            TotalRating = 8.2m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -185,11 +197,12 @@ namespace DAL.Migrations
                             Category = 2,
                             Count = 1000,
                             DateCreated = new DateTime(2005, 10, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/SkyrimLogo.jpg",
                             Name = "Skyrim",
                             Price = 19.99m,
                             Rating = 18,
-                            TotalRating = 9.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -198,11 +211,12 @@ namespace DAL.Migrations
                             Category = 2,
                             Count = 100,
                             DateCreated = new DateTime(2017, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/FallLogo.jpg",
                             Name = "Fallout 3",
                             Price = 29.99m,
                             Rating = 18,
-                            TotalRating = 9.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -211,11 +225,12 @@ namespace DAL.Migrations
                             Category = 2,
                             Count = 100,
                             DateCreated = new DateTime(2015, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/TheWitcherLogo.jpg",
                             Name = "The Witcher 3",
                             Price = 49.99m,
                             Rating = 18,
-                            TotalRating = 9.9m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -224,11 +239,12 @@ namespace DAL.Migrations
                             Category = 2,
                             Count = 100,
                             DateCreated = new DateTime(2020, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/CyberLogo.jpg",
                             Name = "Cyberpunk 2077",
                             Price = 19.99m,
                             Rating = 18,
-                            TotalRating = 7.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -237,11 +253,12 @@ namespace DAL.Migrations
                             Category = 2,
                             Count = 300,
                             DateCreated = new DateTime(2012, 4, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/MountLogo.jpg",
                             Name = "Mount and Blade",
                             Price = 39.99m,
                             Rating = 18,
-                            TotalRating = 9.0m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -250,11 +267,12 @@ namespace DAL.Migrations
                             Category = 2,
                             Count = 200,
                             DateCreated = new DateTime(2015, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/DarkLogo.jpg",
                             Name = "Dark Souls 3",
                             Price = 19.99m,
                             Rating = 18,
-                            TotalRating = 9.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -263,11 +281,12 @@ namespace DAL.Migrations
                             Category = 2,
                             Count = 100,
                             DateCreated = new DateTime(2007, 7, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/OverLordLogo.jpg",
                             Name = "Overlord",
                             Price = 9.99m,
                             Rating = 6,
-                            TotalRating = 9.1m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -276,11 +295,12 @@ namespace DAL.Migrations
                             Category = 3,
                             Count = 30,
                             DateCreated = new DateTime(2005, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/WarLogo.jpg",
                             Name = "WarCraft 3",
                             Price = 19.99m,
                             Rating = 12,
-                            TotalRating = 9.7m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -289,11 +309,12 @@ namespace DAL.Migrations
                             Category = 3,
                             Count = 100,
                             DateCreated = new DateTime(2003, 8, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/StarLogo.jpg",
                             Name = "StarCraft 2",
                             Price = 29.99m,
                             Rating = 12,
-                            TotalRating = 9.5m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -302,11 +323,12 @@ namespace DAL.Migrations
                             Category = 3,
                             Count = 100,
                             DateCreated = new DateTime(2002, 9, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/StrongLogo.jpg",
                             Name = "Stronghold Crusader",
                             Price = 29.99m,
                             Rating = 6,
-                            TotalRating = 9.7m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -315,11 +337,12 @@ namespace DAL.Migrations
                             Category = 3,
                             Count = 100,
                             DateCreated = new DateTime(2007, 10, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/HeroesLogo.jpg",
                             Name = "Heroes of Might and Magic 5",
                             Price = 29.99m,
                             Rating = 12,
-                            TotalRating = 9.9m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -328,11 +351,12 @@ namespace DAL.Migrations
                             Category = 4,
                             Count = 100,
                             DateCreated = new DateTime(2000, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/SyberiaLogo.jpg",
                             Name = "Syberia",
                             Price = 4.99m,
                             Rating = 6,
-                            TotalRating = 6.3m
+                            TotalRating = 0m
                         },
                         new
                         {
@@ -341,12 +365,42 @@ namespace DAL.Migrations
                             Category = 4,
                             Count = 100,
                             DateCreated = new DateTime(2012, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
                             Logo = "https://daniilstorepicturebucket.s3.us-east-2.amazonaws.com/SherlockLogo.jpg",
                             Name = "Sherlock Holmes",
                             Price = 29.99m,
                             Rating = 6,
-                            TotalRating = 9.9m
+                            TotalRating = 0m
                         });
+                });
+
+            modelBuilder.Entity("DAL.Entities.ProductRating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Rating")
+                        .HasColumnType("decimal(5,1)")
+                        .HasColumnName("Rating");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProductRatings");
                 });
 
             modelBuilder.Entity("DAL.Entities.Role", b =>
@@ -544,6 +598,21 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("DAL.Entities.ProductRating", b =>
+                {
+                    b.HasOne("DAL.Entities.Product", null)
+                        .WithMany("Ratings")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.User", null)
+                        .WithMany("Ratings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("DAL.Entities.Role", null)
@@ -593,6 +662,16 @@ namespace DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DAL.Entities.Product", b =>
+                {
+                    b.Navigation("Ratings");
+                });
+
+            modelBuilder.Entity("DAL.Entities.User", b =>
+                {
+                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

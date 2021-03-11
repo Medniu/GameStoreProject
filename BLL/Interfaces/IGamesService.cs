@@ -14,7 +14,8 @@ namespace BLL.Interfaces
         Task<GamesInfoDTO> FindGameById(int id);
         Task<GamesInfoDTO> CreateGame(GamesInfoDTO gamesInfo);
         Task<bool> DeleteGameById(int id);
-
         Task<GamesInfoDTO> EditGame(int id, GamesInfoDTO gamesInfo);
+        Task<decimal?> RateTheGame(GameRatingDTO gameRatingDTO);
+        Task<PageDTO> SortAndFiltrGame(SortAndFiltrDTO filtrDTO);
     }
 }

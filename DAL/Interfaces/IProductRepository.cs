@@ -15,8 +15,10 @@ namespace DAL.Interfaces
         Task<Product> FindById(int id);
         Task<Product> Create(GamesInformation gamesInformation);
         Task<bool> Delete(int id);
-
         Task<Product> Edit(int id, GamesInformation gamesInformation);
+        Task<decimal?> Rate(GameRating gameRating);
+
+        Task<PageInformation> SortAndFiltr(SortAndFiltrInformation filtrInformation);
 
     }
 }

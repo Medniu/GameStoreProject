@@ -32,8 +32,7 @@ namespace GameStore.Models
         [Required]
         public int Count { get; set; }
         [Required]
-        public DateTime DateCreated { get; set; }
-        [Required]
+        public DateTime DateCreated { get; set; }       
         public decimal TotalRating { get; set; }
     }
 }

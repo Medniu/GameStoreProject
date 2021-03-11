@@ -10,7 +10,7 @@ namespace BLL.DTO
         public string Name { get; set; }       
         public string Category { get; set; }     
         public DateTime DateCreated { get; set; }   
-        public decimal TotalRating { get; set; }
+        public decimal? TotalRating { get; set; }
         public string Rating { get; set; }
         public string Logo { get; set; }
         public string Background { get; set; }

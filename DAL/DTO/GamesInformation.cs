@@ -10,7 +10,7 @@ namespace DAL.DTO
         public string Name { get; set; }
         public Categories Category { get; set; }
         public DateTime DateCreated { get; set; }
-        public decimal TotalRating { get; set; }
+        public decimal? TotalRating { get; set; }
         public int Count { get; set; }
         public Rating Rating { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.DTO;
 using BLL.Interfaces;
+using GameStore.Interfaces;
 using GameStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,12 @@ namespace GameStore.Controllers
     {
         private readonly IGamesService _gamesService;
         private readonly IMapper _mapper;
-        public GamesController(IGamesService gamesService, IMapper mapper)
+        private readonly IUserHelper _userHelper;
+        public GamesController(IGamesService gamesService, IMapper mapper, IUserHelper userHelper)
         {
             _gamesService = gamesService;
             _mapper = mapper;
+            _userHelper = userHelper;
         }
 
         [HttpGet]
@@ -101,6 +104,21 @@ namespace GameStore.Controllers
                 return new JsonResult(result);
             }
             return BadRequest(ModelState);
-        }     
+        }
+
+        [HttpPost("rating")]
+        [Authorize]
+        public async Task<IActionResult> Rate([FromBody] GameRatingModel gameRating)
+        {
+            string userId = _userHelper.GetUserId();
+
+            var ratingDTO = _mapper.Map<GameRatingModel, GameRatingDTO>(gameRating);
+
+            ratingDTO.UserId = userId;
+
+            var result = await _gamesService.RateTheGame(ratingDTO);
+
+            return new JsonResult(result);
+        }
     }
 }
