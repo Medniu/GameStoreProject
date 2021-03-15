@@ -138,6 +138,20 @@ namespace GameStore.Mapping
                 .ForMember(u => u.PageSize, opt => opt.MapFrom(ur => ur.PageSize))
                 .ForMember(u => u.TotalItems, opt => opt.MapFrom(ur => ur.TotalItems));
 
+            CreateMap<OrderModel, OrderModelDTO>()
+                .ForMember(u => u.ProductId, opt => opt.MapFrom(ur => ur.ProductId))
+                .ForMember(u => u.Quantity, opt => opt.MapFrom(ur => ur.Quantity));
+
+            CreateMap<OrderModelDTO, OrderDTO>()
+                .ForMember(u => u.UserId, opt => opt.MapFrom(ur => ur.UserId))
+                .ForMember(u => u.Quantity, opt => opt.MapFrom(ur => ur.Quantity))
+                .ForMember(u => u.ProductId, opt => opt.MapFrom(ur => ur.ProductId));
+            CreateMap<OrderDTO, Order>()
+                .ForMember(u => u.UserId, opt => opt.MapFrom(ur => ur.UserId));
+
+            CreateMap<DeletedGameModelDTO, DeletedGameDTO>()
+                .ForMember(u => u.UserId, opt => opt.MapFrom(ur => ur.UserId))
+                .ForMember(u => u.deletedGamesID, opt => opt.MapFrom(ur => ur.deletedGamesID));
         }
     }
 }

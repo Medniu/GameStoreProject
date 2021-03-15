@@ -47,6 +47,8 @@ namespace DAL.Entities
         [Column("DateOfCreation" , TypeName ="date")]
         public DateTime DateCreated { get; set; }
 
+        public ICollection<OrderProduct> OrderProducts { get; set; }
+
         public ICollection<ProductRating> Ratings { get; set; }
          
         [Column("TotalRating", TypeName = "decimal(5,1)")]

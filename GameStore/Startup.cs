@@ -71,8 +71,10 @@ namespace GameStore
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IGamesService, GamesService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddTransient<IUserHelper, UserHelper>();
 
