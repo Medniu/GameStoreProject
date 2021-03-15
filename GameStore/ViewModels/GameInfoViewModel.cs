@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace GameStore.ViewModels
+{
+    public class GameInfoViewModel
+    {
+        public string Name { get; set; }
+        public string Category { get; set; }
+        public DateTime DateCreated { get; set; }
+        public decimal? TotalRating { get; set; }
+        public string Rating { get; set; }
+        public string Logo { get; set; }
+        public string Background { get; set; }
+        public decimal Price { get; set; }
+        public int Count { get; set; }
+    }
+}

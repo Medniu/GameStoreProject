@@ -2,6 +2,7 @@
 using BLL.DTO;
 using BLL.Interfaces;
 using GameStore.Models;
+using GameStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +31,11 @@ namespace GameStore.Controllers
         {
             var searchDto = _mapper.Map<SortAndFiltrModel, SortAndFiltrDTO>(sortAndFiltrModel);
 
-            var result = await _gamesService.SortAndFiltrGame(searchDto);            
+            var result = await _gamesService.SortAndFiltrGame(searchDto);
 
-            return new JsonResult(result);
+            var pageViewModel = _mapper.Map<PageDTO, PageViewModel>(result);
+
+            return new JsonResult(pageViewModel);
         }
     }
 }

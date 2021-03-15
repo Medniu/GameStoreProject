@@ -3,6 +3,7 @@ using BLL.DTO;
 using BLL.Interfaces;
 using GameStore.Interfaces;
 using GameStore.Models;
+using GameStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -34,7 +35,9 @@ namespace GameStore.Controllers
         {
             var result = await _gamesService.GetTopCategories();
 
-            return new JsonResult(result);
+            var topCategoriesViewModel = _mapper.Map<IEnumerable<TopCategoriesDTO>, IEnumerable<TopCategoriesViewModel>>(result);
+
+            return new JsonResult(topCategoriesViewModel);
         }
 
 
@@ -50,16 +53,20 @@ namespace GameStore.Controllers
 
             var result = await _gamesService.FindGameByName(searchDto);
 
-            return new JsonResult(result);
+            var gamesInfoViewModel = _mapper.Map<IEnumerable<GamesInfoDTO>, IEnumerable<GameInfoViewModel>>(result);
+
+            return new JsonResult(gamesInfoViewModel);
         }
 
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> FindGame(int id)
-        {
+        {            
             var result = await _gamesService.FindGameById(id);
 
-            return new JsonResult(result);
+            var gamesInfoViewModel = _mapper.Map<GamesInfoDTO, GameInfoViewModel>(result);
+
+            return new JsonResult(gamesInfoViewModel);
         }
 
         [HttpPost]
@@ -69,8 +76,12 @@ namespace GameStore.Controllers
             if (ModelState.IsValid)
             {
                 var newGame = _mapper.Map<CreateGameModel, GamesInfoDTO>(gameModel);
+
                 var result = await _gamesService.CreateGame(newGame);
-                return new JsonResult(result);
+
+                var gamesInfoViewModel = _mapper.Map<GamesInfoDTO, GameInfoViewModel>(result);
+
+                return new JsonResult(gamesInfoViewModel);
             }
             else
             {
@@ -100,8 +111,12 @@ namespace GameStore.Controllers
             if (ModelState.IsValid)
             {
                 var newGameInfo = _mapper.Map<EditGameModel, GamesInfoDTO>(gameModel);
+
                 var result = await _gamesService.EditGame(gameModel.Id, newGameInfo);
-                return new JsonResult(result);
+
+                var gamesInfoViewModel = _mapper.Map<GamesInfoDTO, GameInfoViewModel>(result);
+
+                return new JsonResult(gamesInfoViewModel);
             }
             return BadRequest(ModelState);
         }

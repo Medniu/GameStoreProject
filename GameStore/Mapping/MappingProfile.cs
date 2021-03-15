@@ -7,6 +7,7 @@ using BLL.DTO;
 using DAL.DTO;
 using DAL.Entities;
 using GameStore.Models;
+using GameStore.ViewModels;
 
 namespace GameStore.Mapping
 {
@@ -34,12 +35,37 @@ namespace GameStore.Mapping
                 .ForMember(u => u.Name, opt => opt.MapFrom(ur => ur.UserName))
                 .ForMember(u => u.PhoneNumber, opt => opt.MapFrom(ur => ur.PhoneNumber));
 
+            CreateMap<JwtDTO, JwtViewModel>()
+               .ForMember(u => u.Result, opt => opt.MapFrom(ur => ur.Result))
+               .ForMember(u => u.JwtToken, opt => opt.MapFrom(ur => ur.JwtToken));
 
-            CreateMap<UserDTO, UserProfile>()
+            CreateMap<UserDTO, UserProfileViewModel>()
                .ForMember(u => u.Email, opt => opt.MapFrom(ur => ur.Email))
                .ForMember(u => u.Name, opt => opt.MapFrom(ur => ur.Name))
                .ForMember(u => u.PhoneNumber, opt => opt.MapFrom(ur => ur.PhoneNumber));
-            CreateMap<UserProfile,UserDTO>()
+            
+            CreateMap<TopCategoriesDTO, TopCategoriesViewModel>()
+               .ForMember(u => u.AmountOfGames, opt => opt.MapFrom(ur => ur.AmountOfGames))
+               .ForMember(u => u.Categories, opt => opt.MapFrom(ur => ur.Categories));
+            
+            CreateMap<GamesInfoDTO, GameInfoViewModel>()
+                .ForMember(u => u.Name, opt => opt.MapFrom(ur => ur.Name))
+                .ForMember(u => u.Logo, opt => opt.MapFrom(ur => ur.Logo))
+                .ForMember(u => u.Price, opt => opt.MapFrom(ur => ur.Price))
+                .ForMember(u => u.Rating, opt => opt.MapFrom(ur => ur.Rating))
+                .ForMember(u => u.TotalRating, opt => opt.MapFrom(ur => ur.TotalRating))
+                .ForMember(u => u.DateCreated, opt => opt.MapFrom(ur => ur.DateCreated))
+                .ForMember(u => u.Category, opt => opt.MapFrom(ur => ur.Category))
+                .ForMember(u => u.Background, opt => opt.MapFrom(ur => ur.Background))
+                .ForMember(u => u.Count, opt => opt.MapFrom(ur => ur.Count));
+            
+            CreateMap<PageDTO, PageViewModel>()
+               .ForMember(u => u.CurrentPage, opt => opt.MapFrom(ur => ur.CurrentPage))
+               .ForMember(u => u.GamesInformation, opt => opt.MapFrom(ur => ur.GamesInformation))
+               .ForMember(u => u.PageSize, opt => opt.MapFrom(ur => ur.PageSize))
+               .ForMember(u => u.TotalItems, opt => opt.MapFrom(ur => ur.TotalItems));
+
+            CreateMap<UserProfileModel,UserDTO>()
                .ForMember(u => u.Email, opt => opt.MapFrom(ur => ur.Email))
                .ForMember(u => u.Name, opt => opt.MapFrom(ur => ur.Name))
                .ForMember(u => u.PhoneNumber, opt => opt.MapFrom(ur => ur.PhoneNumber));

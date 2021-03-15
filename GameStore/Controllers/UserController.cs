@@ -4,6 +4,7 @@ using BLL.Interfaces;
 using GameStore.Helper;
 using GameStore.Interfaces;
 using GameStore.Models;
+using GameStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -37,27 +38,27 @@ namespace GameStore.Controllers
 
             var result = await _userService.GetInfo(userId);
 
-            var userProfile = _mapper.Map<UserDTO, UserProfile>(result);
+            var userProfile = _mapper.Map<UserDTO, UserProfileViewModel>(result);
 
             return new JsonResult(userProfile);
         }
 
         [HttpPut]
-        public async Task<IActionResult> ChangeUserInfo([FromBody] UserProfile userProfile)
+        public async Task<IActionResult> ChangeUserInfo([FromBody] UserProfileModel userProfile)
         {
             if (ModelState.IsValid)
             {                              
                 string userId = _userHelper.GetUserId();
 
-                var userDto = _mapper.Map<UserProfile, UserDTO>(userProfile);
+                var userDto = _mapper.Map<UserProfileModel, UserDTO>(userProfile);
 
-                var result = await _userService.ChangeInfo(userId, userDto);
+                var result = await _userService.ChangeInfo(userId, userDto);           
 
-                userProfile = _mapper.Map<UserDTO, UserProfile>(result.UserDTO);
+                var updatedUserProfile = _mapper.Map<UserDTO, UserProfileViewModel>(result.UserDTO);
 
                 if (result.Result == true)
                 {
-                    return new JsonResult(userProfile);
+                    return new JsonResult(updatedUserProfile);
                 }
                 else
                 {

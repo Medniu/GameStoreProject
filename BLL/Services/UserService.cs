@@ -41,28 +41,23 @@ namespace BLL.Services
         public async Task<bool> ChangePassword(string userId, UserDTO userDTO )
         {
             var user = await _userManager.FindByIdAsync(userId);
+
             if (user != null)
-            {
+            {              
                 IdentityResult result =
                     await _userManager.ChangePasswordAsync(user, userDTO.Password, userDTO.NewPassword);
 
-                if (result.Succeeded)
-                {
-                    return true;
-                }
-                else
-                { 
-                    return false;
-                }
+                return result.Succeeded;               
             }
             else 
             { 
                 return false;
             }                 
         }
-        public async Task<ResultDTO> ChangeInfo(string userId, UserDTO userDTO)
+        public async Task<ChangedUserDTO> ChangeInfo(string userId, UserDTO userDTO)
         {
-            var resultDto = new ResultDTO();
+            var changedUserDto = new ChangedUserDTO();
+            //var resultDto = new ResultDTO();
             var user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
@@ -74,22 +69,22 @@ namespace BLL.Services
                 if (result.Succeeded)
                 {
                     var userDto = _mapper.Map<User, UserDTO>(user);
-                    resultDto.Result = true;
-                    resultDto.UserDTO = userDto;
-                    return resultDto;
+                    changedUserDto.Result = true;
+                    changedUserDto.UserDTO = userDto;                    
+                    return changedUserDto;
                 }
                 else 
                 {
-                    resultDto.Result = false;
-                    resultDto.UserDTO = null;
-                    return resultDto; 
+                    changedUserDto.Result = false;
+                    changedUserDto.UserDTO = null;
+                    return changedUserDto; 
                 }
             }
             else 
             {
-                resultDto.Result = false;
-                resultDto.UserDTO = null;
-                return resultDto;
+                changedUserDto.Result = false;
+                changedUserDto.UserDTO = null;
+                return changedUserDto;
             }
         }
         public async Task<UserDTO> GetInfo (string userId)
@@ -121,16 +116,17 @@ namespace BLL.Services
                 return false;
             }       
         }      
-        public async Task<ResultDTO> Authorize(UserDTO userDTO)
+        public async Task<JwtDTO> Authorize(UserDTO userDTO)
         {
-            var resultDto = new ResultDTO();
+            var jwtDto = new JwtDTO();
+          
             var user = _userManager.Users.SingleOrDefault(u => u.Email == userDTO.Email);
 
             if (user is null)
             {
-                resultDto.Result = false;
-                resultDto.JwtToken = string.Empty;
-                return resultDto;
+                jwtDto.Result = false;
+                jwtDto.JwtToken = string.Empty;
+                return jwtDto;
             }
 
             var userSigninResult = await _userManager.CheckPasswordAsync(user, userDTO.Password);
@@ -138,15 +134,15 @@ namespace BLL.Services
             if (userSigninResult)
             {
                 var roles = await _userManager.GetRolesAsync(user);
-                resultDto.Result = true;
-                resultDto.JwtToken = GenerateJwt(user,roles);
-                return resultDto;
+                jwtDto.Result = true;
+                jwtDto.JwtToken = GenerateJwt(user,roles);
+                return jwtDto;
             }
             else
             {
-                resultDto.Result = false;
-                resultDto.JwtToken = string.Empty;
-                return resultDto;
+                jwtDto.Result = false;
+                jwtDto.JwtToken = string.Empty;
+                return jwtDto;
             }
         }     
         public void Dispose()

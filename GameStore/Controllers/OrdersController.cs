@@ -3,14 +3,13 @@ using BLL.DTO;
 using BLL.Interfaces;
 using GameStore.Interfaces;
 using GameStore.Models;
+using GameStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GameStore.Controllers
 {
@@ -67,8 +66,10 @@ namespace GameStore.Controllers
             }
 
             var result = await _orderService.GetProductFromOrder(orderId);
+            
+            var gamesInfoViewModel = _mapper.Map<IEnumerable<GamesInfoDTO>, IEnumerable<GameInfoViewModel>>(result);
 
-            return new JsonResult(result);
+            return new JsonResult(gamesInfoViewModel);
         }
 
         [HttpDelete]

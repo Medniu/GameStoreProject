@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using AutoMapper;
+using GameStore.ViewModels;
 
 namespace GameStore.Controllers
 {
@@ -40,9 +41,11 @@ namespace GameStore.Controllers
               
                 var result = await _userService.Authorize(userDto);
 
-                if (result.Result)
+                var jwtViewModel = _mapper.Map<JwtDTO, JwtViewModel>(result);
+
+                if (jwtViewModel.Result)
                 {
-                    return Ok(result.JwtToken);
+                    return Ok(jwtViewModel.JwtToken);
                 }
                 else
                 {

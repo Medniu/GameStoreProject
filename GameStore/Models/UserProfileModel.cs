@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameStore.Models
 {
-    public class UserProfile
+    public class UserProfileModel
     {
         [Required]
         public string Name { get; set; }

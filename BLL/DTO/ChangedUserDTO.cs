@@ -4,10 +4,9 @@ using System.Text;
 
 namespace BLL.DTO
 {
-    public class ResultDTO
+    public class ChangedUserDTO
     {
         public bool Result { get; set; }
-        public UserDTO? UserDTO { get; set; }
-        public string? JwtToken { get; set; }       
+        public UserDTO UserDTO { get; set; }
     }
 }

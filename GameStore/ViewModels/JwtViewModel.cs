@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace GameStore.ViewModels
 {
-    public class TopCategoriesViewModel
+    public class JwtViewModel
     {
-        public string Categories { get; set; }
-        public int AmountOfGames { get; set; }
+        public bool Result { get; set; }
+        public string JwtToken { get; set; }
     }
 }

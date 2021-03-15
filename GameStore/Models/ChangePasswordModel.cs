@@ -14,6 +14,7 @@ namespace GameStore.Models
         public string NewPassword { get; set; }
         [Required]
         [DataType(DataType.Password)]
+        [RegularExpression(@"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,20}$")]
         public string OldPassword { get; set; }
     }
 }
