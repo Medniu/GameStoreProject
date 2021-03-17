@@ -12,9 +12,9 @@ namespace BLL.Interfaces
         Task<IEnumerable<TopCategoriesDTO>> GetTopCategories();
         Task<IEnumerable<GamesInfoDTO>> FindGameByName(SearchQueryDTO queryDTO);
         Task<GamesInfoDTO> FindGameById(int id);
-        Task<GamesInfoDTO> CreateGame(GamesInfoDTO gamesInfo);
+        Task<GamesInfoDTO> CreateGame(CreateGameModelDTO gamesInfo);
         Task<bool> DeleteGameById(int id);
-        Task<GamesInfoDTO> EditGame(int id, GamesInfoDTO gamesInfo);
+        Task<GamesInfoDTO> EditGame(int id, EditGameModelDTO gamesInfo);
         Task<decimal?> RateTheGame(GameRatingDTO gameRatingDTO);
         Task<PageDTO> SortAndFiltrGame(SortAndFiltrDTO filtrDTO);
     }

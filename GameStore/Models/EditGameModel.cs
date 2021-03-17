@@ -1,4 +1,5 @@
 ﻿using DAL.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,21 +19,14 @@ namespace GameStore.Models
         public Categories Category { get; set; }
 
         [Required]
-        public Rating Rating { get; set; }
-
-        [Required]
-        public string Logo { get; set; }
-
-        [Required]
-        public string Background { get; set; }
+        public Rating Rating { get; set; }       
+        public IFormFile Logo { get; set; }       
+        public IFormFile Background { get; set; }
 
         [Required]
         public decimal Price { get; set; }
 
         [Required]
-        public int Count { get; set; }
-        [Required]
-        public DateTime DateCreated { get; set; }       
-        public decimal TotalRating { get; set; }
+        public int Count { get; set; }              
     }
 }

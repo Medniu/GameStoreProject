@@ -28,11 +28,11 @@ namespace DAL.Entities
         public Rating Rating { get; set; }
         
         [Required]
-        [Column ("Logo", TypeName = "varchar(200)")]
+        [Column ("Logo", TypeName = "varchar(500)")]
         public string Logo { get; set; }
 
         [Required]
-        [Column("BackGround", TypeName = "varchar(200)")]
+        [Column("BackGround", TypeName = "varchar(500)")]
         public string Background { get; set; }
 
         [Required]
@@ -44,8 +44,8 @@ namespace DAL.Entities
         public int Count { get; set; }
 
         [Required]
-        [Column("DateOfCreation" , TypeName ="date")]
-        public DateTime DateCreated { get; set; }
+        [Column("DateOfCreation", TypeName = "date")]
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
         public ICollection<OrderProduct> OrderProducts { get; set; }
 

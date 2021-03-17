@@ -1,4 +1,5 @@
 ﻿using DAL.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,29 +10,31 @@ namespace GameStore.Models
 {
     public class CreateGameModel
     {
-        [Required]        
+        //[Required]        
+        public IFormFile Background { get; set; }
+        public IFormFile Logo { get; set; }
         public string Name { get; set; }
 
-        [Required]    
+        //[Required]    
         public Categories Category { get; set; }
 
-        [Required]   
+        //[Required]   
         public Rating Rating { get; set; }
 
-        [Required]       
-        public string Logo { get; set; }
+        //[Required]       
+        //public string Logo { get; set; }
 
-        [Required]     
-        public string Background { get; set; }
+        //[Required]     
+        //public string Background { get; set; }
 
-        [Required]    
+        //[Required]    
         public decimal Price { get; set; }
 
-        [Required]   
+        //[Required]   
         public int Count { get; set; }
-        [Required]     
-        public DateTime DateCreated { get; set; }
-        [Required]        
-        public decimal TotalRating { get; set; }
+        //[Required]     
+        //public DateTime DateCreated { get; set; }
+        //[Required]        
+        //public decimal TotalRating { get; set; }     
     }
 }

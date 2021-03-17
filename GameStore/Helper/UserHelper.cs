@@ -18,6 +18,6 @@ namespace GameStore.Helper
         {
             var HttpContext = httpContextAccessor.HttpContext;           
             return HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        }      
+        }              
     } 
 }

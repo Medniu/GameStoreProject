@@ -5,7 +5,9 @@ using GameStore.Interfaces;
 using GameStore.Models;
 using GameStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +22,12 @@ namespace GameStore.Controllers
     {
         private readonly IGamesService _gamesService;
         private readonly IMapper _mapper;
-        private readonly IUserHelper _userHelper;
+        private readonly IUserHelper _userHelper;    
         public GamesController(IGamesService gamesService, IMapper mapper, IUserHelper userHelper)
         {
             _gamesService = gamesService;
             _mapper = mapper;
-            _userHelper = userHelper;
+            _userHelper = userHelper;       
         }
 
         [HttpGet]
@@ -61,33 +63,39 @@ namespace GameStore.Controllers
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> FindGame(int id)
-        {            
+        {
             var result = await _gamesService.FindGameById(id);
 
             var gamesInfoViewModel = _mapper.Map<GamesInfoDTO, GameInfoViewModel>(result);
-
-            return new JsonResult(gamesInfoViewModel);
+            if (gamesInfoViewModel == null)
+            {
+                return StatusCode(404);
+            }
+            else
+            {
+                return new JsonResult(gamesInfoViewModel);
+            }
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] CreateGameModel gameModel)
+        public async Task<IActionResult> Create([FromForm] CreateGameModel createGameModel)
         {
             if (ModelState.IsValid)
             {
-                var newGame = _mapper.Map<CreateGameModel, GamesInfoDTO>(gameModel);
+                var newGame = _mapper.Map<CreateGameModel, CreateGameModelDTO>(createGameModel);             
 
                 var result = await _gamesService.CreateGame(newGame);
 
                 var gamesInfoViewModel = _mapper.Map<GamesInfoDTO, GameInfoViewModel>(result);
 
-                return new JsonResult(gamesInfoViewModel);
+                return new JsonResult(gamesInfoViewModel);               
             }
             else
             {
                 return BadRequest(ModelState);
             }
-        }
+        }   
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
@@ -106,11 +114,11 @@ namespace GameStore.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit([FromBody] EditGameModel gameModel)
+        public async Task<IActionResult> Edit([FromForm] EditGameModel gameModel)
         {
             if (ModelState.IsValid)
             {
-                var newGameInfo = _mapper.Map<EditGameModel, GamesInfoDTO>(gameModel);
+                var newGameInfo = _mapper.Map<EditGameModel, EditGameModelDTO>(gameModel);
 
                 var result = await _gamesService.EditGame(gameModel.Id, newGameInfo);
 
@@ -125,15 +133,22 @@ namespace GameStore.Controllers
         [Authorize]
         public async Task<IActionResult> Rate([FromBody] GameRatingModel gameRating)
         {
-            string userId = _userHelper.GetUserId();
+            if (ModelState.IsValid)
+            {
+                string userId = _userHelper.GetUserId();
 
-            var ratingDTO = _mapper.Map<GameRatingModel, GameRatingDTO>(gameRating);
+                var ratingDTO = _mapper.Map<GameRatingModel, GameRatingDTO>(gameRating);
 
-            ratingDTO.UserId = userId;
+                ratingDTO.UserId = userId;
 
-            var result = await _gamesService.RateTheGame(ratingDTO);
+                var result = await _gamesService.RateTheGame(ratingDTO);
 
-            return new JsonResult(result);
+                return new JsonResult(result);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
     }
 }

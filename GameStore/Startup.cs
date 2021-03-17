@@ -24,6 +24,8 @@ using GameStore.Helper;
 using GameStore.Interfaces;
 using DAL.Interfaces;
 using DAL.Repository;
+using Amazon.S3;
+using Amazon.Runtime;
 
 namespace GameStore
 {
@@ -40,15 +42,20 @@ namespace GameStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
+            services.AddControllers();           
 
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
 
             services.Configure<EmailSettings>(Configuration.GetSection("Email"));
+            services.Configure<AwsSettings>(Configuration.GetSection("AWS"));
 
-            services.AddControllers();                    
-
+            services.AddDefaultAWSOptions(Configuration.GetAWSOptions("AWS"));
+            services.AddSingleton<IS3Service, S3Service>();
+            services.AddAWSService<IAmazonS3>();
+           
             var dataAssemblyName = typeof(ApplicationDbContext).Assembly.GetName().Name;
+
             services.AddDbContext<ApplicationDbContext>(options => 
             {               
                 options.UseSqlServer(
@@ -69,7 +76,7 @@ namespace GameStore
                 .AddDefaultTokenProviders();
             
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IEmailService, EmailService>();            
             services.AddScoped<IGamesService, GamesService>();
             services.AddScoped<IOrderService, OrderService>();
 
@@ -77,6 +84,7 @@ namespace GameStore
             services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddTransient<IUserHelper, UserHelper>();
+            
 
             services.AddSwaggerGen(options =>
             {
@@ -121,8 +129,7 @@ namespace GameStore
             {
                 app.UseExceptionHandler("/Error");              
                 app.UseHsts();
-            }
-
+            }         
             app.UseHttpsRedirection();       
 
             app.UseRouting();

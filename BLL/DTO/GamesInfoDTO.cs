@@ -8,8 +8,8 @@ namespace BLL.DTO
     public class GamesInfoDTO
     {
         public string Name { get; set; }       
-        public string Category { get; set; }     
-        public DateTime DateCreated { get; set; }   
+        public string Category { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;  
         public decimal? TotalRating { get; set; }
         public string Rating { get; set; }
         public string Logo { get; set; }
