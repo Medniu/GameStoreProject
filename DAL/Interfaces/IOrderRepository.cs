@@ -9,7 +9,7 @@ namespace DAL.Interfaces
     public interface IOrderRepository
     {
         Task<bool> AddToOrder(OrderDTO orderDTO);
-        Task<ICollection<GamesInformation>> GetProductFromOrder(string orderId);
+        Task<ICollection<GamesInformation>> GetProductFromOrder(string orderId, string userId);
         Task<bool> Delete(DeletedGameDTO deletedGamesId);
         Task<bool> CompleteOrder(string userId);
     }

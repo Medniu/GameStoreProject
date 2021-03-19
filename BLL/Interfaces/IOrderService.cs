@@ -9,8 +9,7 @@ namespace BLL.Interfaces
     public interface IOrderService
     {
         Task<bool> AddProductToOrder(OrderModelDTO orderDTO);
-        Task<IEnumerable<GamesInfoDTO>> GetProductFromOrder(string orderId);
-
+        Task<IEnumerable<GamesInfoDTO>> GetProductFromOrder(string orderId, string userId);
         Task DeleteProductsFromOrder(DeletedGameModelDTO deletedGamesId);
         Task Buy(string userId);
     }

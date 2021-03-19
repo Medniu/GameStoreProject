@@ -19,8 +19,10 @@ namespace GameStore.Models
         public Categories Category { get; set; }
 
         [Required]
-        public Rating Rating { get; set; }       
-        public IFormFile Logo { get; set; }       
+        public Rating Rating { get; set; }
+        [Required]
+        public IFormFile Logo { get; set; }
+        [Required]
         public IFormFile Background { get; set; }
 
         [Required]

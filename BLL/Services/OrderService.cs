@@ -33,9 +33,9 @@ namespace BLL.Services
         }
 
         
-        public async Task<IEnumerable<GamesInfoDTO>> GetProductFromOrder(string orderId)
+        public async Task<IEnumerable<GamesInfoDTO>> GetProductFromOrder(string orderId, string userId)
         {
-            var result = await _repository.GetProductFromOrder(orderId);       
+            var result = await _repository.GetProductFromOrder(orderId, userId);       
             
             var productList = result.Select(s => new GamesInfoDTO
             {

@@ -102,7 +102,7 @@ namespace BLL.Services
             };
         }
 
-        public async Task<AwsResponse> UpdatePictoreOnAws(EditGameModelDTO editGameModelDto)
+        public async Task<AwsResponse> UpdatePictureOnAws(EditGameModelDTO editGameModelDto)
         {
             var gamesInfoDTO = _mapper.Map<EditGameModelDTO, GamesInfoDTO>(editGameModelDto);
             try

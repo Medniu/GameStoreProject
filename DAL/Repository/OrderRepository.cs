@@ -80,82 +80,86 @@ namespace DAL.Repository
             }
         }
 
-        public async Task<ICollection<GamesInformation>> GetProductFromOrder(string orderId)
+        public async Task<ICollection<GamesInformation>> GetProductFromOrder(string orderId, string userId)
         {
-            if (Guid.TryParse(orderId, out var guid))
+            if (String.IsNullOrEmpty(orderId))
             {
-                var result = await context.Orders
-                        .Where(x => x.Status == false)
-                        .Where(x => x.UserId == guid)
-                        .Join(context.OrderProducts,
-                        o => o.Id,
-                        op => op.OrderId,
-                        (o, op) => new { o, op })
-                        .Where(x => x.op.IsDeleted == false)
-                        .Join(context.Products,
-                        op => op.op.ProductId,
-                        p => p.Id,
-                        (op, p) => new GamesInformation
-                        {
-                            Name = p.Name,
-                            Category = p.Category,
-                            TotalRating = p.TotalRating,
-                            DateCreated = p.DateCreated,
-                            Logo = p.Logo,
-                            Price = p.Price,
-                            Background = p.Background,
-                            Rating = p.Rating,
-                            Count = p.Count
-                        })
-                        .ToListAsync();
-                return result;
+                if (Guid.TryParse(userId, out var guid))
+                {
+                    var result = await context.Orders
+                            .Where(x => x.Status == false)
+                            .Where(x => x.UserId == guid)
+                            .Join(context.OrderProducts,
+                            o => o.Id,
+                            op => op.OrderId,
+                            (o, op) => new { o, op })
+                            .Where(x => x.op.IsDeleted == false)
+                            .Join(context.Products,
+                            op => op.op.ProductId,
+                            p => p.Id,
+                            (op, p) => new GamesInformation
+                            {
+                                Name = p.Name,
+                                Category = p.Category,
+                                TotalRating = p.TotalRating,
+                                DateCreated = p.DateCreated,
+                                Logo = p.Logo,
+                                Price = p.Price,
+                                Background = p.Background,
+                                Rating = p.Rating,
+                                Count = p.Count
+                            })
+                            .ToListAsync();
+
+                    return result;
+                }
+                return null;
             }
             else
             {
-
-                if (int.TryParse(orderId, out int id))
+                if (int.TryParse(orderId, out int id) && Guid.TryParse(userId, out var guid))
                 {
                     var result = await context.Orders
-                        .Where(x=>x.Status ==false)
-                        .Where(x => x.Id == id)
-                        .Join(context.OrderProducts,
-                        o => o.Id,
-                        op => op.OrderId,
-                        (o, op) => new { o, op })
-                        .Where(x=>x.op.IsDeleted == false)
-                        .Join(context.Products,
-                        op => op.op.ProductId,
-                        p => p.Id,
-                        (op, p) => new GamesInformation
-                        {
-                            Name = p.Name,
-                            Category = p.Category,
-                            TotalRating = p.TotalRating,
-                            DateCreated = p.DateCreated,
-                            Logo = p.Logo,
-                            Price = p.Price,
-                            Background = p.Background,
-                            Rating = p.Rating,
-                            Count = p.Count
-                        })
-                        .ToListAsync();
+                            .Where(x => x.Id == id)
+                            .Where(x => x.UserId == guid)
+                            .Join(context.OrderProducts,
+                            o => o.Id,
+                            op => op.OrderId,
+                            (o, op) => new { o, op })
+                            .Where(x => x.op.IsDeleted == false)
+                            .Join(context.Products,
+                            op => op.op.ProductId,
+                            p => p.Id,
+                            (op, p) => new GamesInformation
+                            {
+                                Name = p.Name,
+                                Category = p.Category,
+                                TotalRating = p.TotalRating,
+                                DateCreated = p.DateCreated,
+                                Logo = p.Logo,
+                                Price = p.Price,
+                                Background = p.Background,
+                                Rating = p.Rating,
+                                Count = p.Count
+                            })
+                            .ToListAsync();
+
                     return result;
                 }
                 else
                 {
                     return null;
                 }
-            }
+            }                                         
         }
-        //i really dont know but if i try to get orderProduct using Async method for example FirsOrDefaultAsync instead of default method
-        //it doesnt work, but in ProductRepository.cs method Delete work excellent
+       
         public async Task<bool> Delete(DeletedGameDTO deletedGamesId)
         {
             if (Guid.TryParse(deletedGamesId.UserId, out var guid))
-            {
+            {               
                 foreach (var item in deletedGamesId.deletedGamesID)
                 {
-                    var orderProduct = context.Orders
+                    var orderProduct = await context.Orders
                         .Where(x => x.UserId == guid)
                         .Join(context.OrderProducts,
                         o => o.Id,
@@ -163,35 +167,16 @@ namespace DAL.Repository
                         (o, op) => new { o, op })
                         .Where(x => x.op.IsDeleted == false)
                         .Select(x => x.op)
-                        .FirstOrDefault(op => op.ProductId == item);
+                        .FirstOrDefaultAsync(op => op.ProductId == item);
 
                     if (orderProduct != null && orderProduct.IsDeleted == false)
                     {
                         orderProduct.IsDeleted = true;
                     }
                 }
-                //SaveChangesAsync doesnt work too
-                context.SaveChanges();
+
+                await context.SaveChangesAsync();
                 return true;
-
-                //Another way to find and update property, but anyway doesnt work with ToListAsync() and SaveChangesAsync(); 
-                //But first way faster for about 100 ms :)
-
-                //var orderProduct = context.Orders
-                //        .Where(x => x.UserId == guid)
-                //        .Join(context.OrderProducts,
-                //        o => o.Id,
-                //        op => op.OrderId,
-                //        (o, op) => new { o, op })
-                //        .Where(x => x.op.IsDeleted == false)
-                //        .Select(x => x.op).ToList();
-
-                //    foreach(var product in orderProduct)
-                //    {
-                //        product.IsDeleted = true;
-                //    }
-
-                //    context.SaveChanges();                      
             }
             else
             {
@@ -199,55 +184,50 @@ namespace DAL.Repository
             }
         }
         public async Task<bool> CompleteOrder(string userId)
-        {
-            //if i change FirstOrDefault to ...DefaultAsync while trying to find order and the same with orderProducts its doesnt work too
-            
+        {            
             if (Guid.TryParse(userId, out var UserGuidId))
             {
-                var order = context.Orders.FirstOrDefault(p => p.UserId == UserGuidId);
+                var order = await context.Orders.FirstOrDefaultAsync(p => p.UserId == UserGuidId);
 
-                var orderProducts = context.Orders
+                var orderProducts = await context.Orders
                         .Where(x => x.UserId == UserGuidId)
                         .Join(context.OrderProducts,
                         o => o.Id,
                         op => op.OrderId,
                         (o, op) => new { o, op })
                         .Where(x => x.op.IsDeleted == false)
-                        .Select(x => x.op).ToList();    
-                
+                        .Select(x => x.op)
+                        .ToListAsync();
+
                 if (IsEnoughAmountOfProduct(orderProducts).Result)
                 {
-                    //but here SaveChangesAsync work well 
                     order.Status = true;
+                    order.DateOrdered = DateTime.UtcNow;
                     await context.SaveChangesAsync();
                     return true;
                 }
 
                 return false;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
-
-        //and here all Async methods work well , its really magic for me why its happened
+        
         private async Task<bool> IsEnoughAmountOfProduct(List<OrderProduct> orderProducts)
-        {
-            var check = true;
+        {            
             foreach (var item in orderProducts)
             {
                 var product = await context.Products.FirstOrDefaultAsync(x => x.Id == item.ProductId);
 
-                if (product.Count < item.Quantity)
+                if (product.Count < item.Quantity || product.IsDeleted == true)
                 {
-                    check = false;
+                    return false;
                 }
 
                 product.Count -= item.Quantity;  
             }
+
             await context.SaveChangesAsync();
-            return check;
+            return true;
         }               
     }
 }

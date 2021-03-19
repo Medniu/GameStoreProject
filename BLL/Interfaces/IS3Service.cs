@@ -10,6 +10,6 @@ namespace BLL.Interfaces
     public interface IS3Service
     {
         Task<AwsResponse> UploadPictureToAws(CreateGameModelDTO gamesInfoDTO);
-        Task<AwsResponse> UpdatePictoreOnAws(EditGameModelDTO editGameModel);
+        Task<AwsResponse> UpdatePictureOnAws(EditGameModelDTO editGameModel);
     }
 }

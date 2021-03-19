@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <None Remove="Repository\OrderRepository.cs~RF652b6ce.TMP" />
+    <None Remove="Repository\OrderRepository.cs~RF6a3525.TMP" />
   </ItemGroup>
 
   <ItemGroup>

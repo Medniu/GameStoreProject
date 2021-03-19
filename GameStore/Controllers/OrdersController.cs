@@ -60,12 +60,10 @@ namespace GameStore.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductFromCurrentOrder([FromQuery] string orderId)
         {
-            if(orderId == null)
-            {
-                orderId = _userHelper.GetUserId();
-            }
+          
+            var userId = _userHelper.GetUserId();
 
-            var result = await _orderService.GetProductFromOrder(orderId);
+            var result = await _orderService.GetProductFromOrder(orderId,userId);
             
             var gamesInfoViewModel = _mapper.Map<IEnumerable<GamesInfoDTO>, IEnumerable<GameInfoViewModel>>(result);
 

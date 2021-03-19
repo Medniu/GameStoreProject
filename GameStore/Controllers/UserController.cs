@@ -85,7 +85,7 @@ namespace GameStore.Controllers
                 var result = await _userService.ChangePassword(userId, userDto);
                 if (result == true)
                 {
-                    return Ok();
+                    return StatusCode(204);
                 }
                 else
                 {

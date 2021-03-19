@@ -57,7 +57,14 @@ namespace GameStore.Controllers
 
             var gamesInfoViewModel = _mapper.Map<IEnumerable<GamesInfoDTO>, IEnumerable<GameInfoViewModel>>(result);
 
-            return new JsonResult(gamesInfoViewModel);
+            if (gamesInfoViewModel == null)
+            {
+                return StatusCode(404);
+            }
+            else
+            {
+                return new JsonResult(gamesInfoViewModel);
+            }
         }
 
         [HttpGet("{id}")]
@@ -103,8 +110,8 @@ namespace GameStore.Controllers
         {
             var result = await _gamesService.DeleteGameById(id);
             if (result == true)
-            {
-                return Ok();
+            {              
+                return StatusCode(204);
             }
             else
             {

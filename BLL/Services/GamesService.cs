@@ -95,7 +95,7 @@ namespace BLL.Services
 
         public async Task<GamesInfoDTO> EditGame(int id, EditGameModelDTO gamesInfo)
         {
-            var response = _s3Service.UpdatePictoreOnAws(gamesInfo).Result;
+            var response = _s3Service.UpdatePictureOnAws(gamesInfo).Result;
 
             if (response != null)
             {
