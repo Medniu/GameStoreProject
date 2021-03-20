@@ -68,6 +68,7 @@ namespace DAL.Repository
         public async Task<Product> Create(GamesInformation gamesInformation)
         {
             var newProduct = _mapper.Map<GamesInformation, Product>(gamesInformation);
+            newProduct.DateCreated = DateTime.UtcNow;
 
             var result = await context.Products.AddAsync(newProduct);
 
@@ -135,8 +136,8 @@ namespace DAL.Repository
         public async Task<PageInformation> SortAndFiltr(SortAndFiltrInformation  filtrInformation)
         {
 
-            var listOfGames = await context.Products
-                .Where(s=> s.IsDeleted != true)
+            var listOfGames = context.Products
+                .Where(s => s.IsDeleted != true)
                 .Select(s => new GamesInformation
                 {
                     Name = s.Name,
@@ -148,7 +149,7 @@ namespace DAL.Repository
                     Background = s.Background,
                     Rating = s.Rating,
                     Count = s.Count
-                }).ToListAsync();
+                }).ToList() ;
 
             var sortedList = await SortAndFiltrGame(listOfGames, filtrInformation);
 
@@ -168,7 +169,7 @@ namespace DAL.Repository
 
             pageInformation.GamesInformation = listOfGames
                 .Skip((int)(filtrInformation.PageSize * (filtrInformation.Page - 1)))
-                .Take((int)filtrInformation.PageSize)
+                .Take((int)filtrInformation.PageSize)              
                 .ToList();
 
             return pageInformation;
@@ -235,8 +236,8 @@ namespace DAL.Repository
             product.Price = gamesInformation.Price;                
             product.Background = gamesInformation.Background;
             product.Category = gamesInformation.Category;
-            product.Count = gamesInformation.Count;
-            product.DateCreated = gamesInformation.DateCreated;
+            product.Count = gamesInformation.Count; 
+            
             return product;
         }     
     }

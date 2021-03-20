@@ -10,7 +10,7 @@ namespace DAL.Entities
         [Key]
         public int Id { get; set; }
         public Guid UserId { get; set; }
-        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+        public DateTime DateCreated { get; set; }
         public DateTime? DateOrdered { get; set; } = null;
         public bool Status { get; set; } = false;      
         public ICollection<OrderProduct> OrderProducts { get; set; }
