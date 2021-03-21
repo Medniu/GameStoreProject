@@ -18,7 +18,8 @@ namespace GameStore.Controllers
     public class ProductsController : Controller
     {
         private readonly IGamesService _gamesService;
-        private readonly IMapper _mapper;        
+        private readonly IMapper _mapper; 
+        
         public ProductsController(IGamesService gamesService, IMapper mapper )
         {
             _gamesService = gamesService;

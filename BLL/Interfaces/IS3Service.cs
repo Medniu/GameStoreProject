@@ -1,5 +1,6 @@
 ﻿using BLL.DTO;
 using BLL.Response;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,6 @@ namespace BLL.Interfaces
 {
     public interface IS3Service
     {
-        Task<AwsResponse> UploadPictureToAws(CreateGameModelDTO gamesInfoDTO);
-        Task<AwsResponse> UpdatePictureOnAws(EditGameModelDTO editGameModel);
+        Task<AwsResponse> UploadPictureToAws(IFormFile gamesInfoDTO);        
     }
 }

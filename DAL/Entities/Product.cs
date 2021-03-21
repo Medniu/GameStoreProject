@@ -26,12 +26,10 @@ namespace DAL.Entities
         [Required]
         [Column ("AgeRating", TypeName = "int")]
         public Rating Rating { get; set; }
-        
-        [Required]
+               
         [Column ("Logo", TypeName = "varchar(500)")]
         public string Logo { get; set; }
-
-        [Required]
+       
         [Column("BackGround", TypeName = "varchar(500)")]
         public string Background { get; set; }
 
@@ -45,7 +43,7 @@ namespace DAL.Entities
 
         [Required]
         [Column("DateOfCreation", TypeName = "date")]
-        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+        public DateTime DateCreated { get; set; }
 
         public ICollection<OrderProduct> OrderProducts { get; set; }
 

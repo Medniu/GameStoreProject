@@ -22,7 +22,6 @@ namespace BLL.Services
             _mapper = mapper;
         }
         
-
         public async Task<bool> AddProductToOrder(OrderModelDTO orderDTO)
         {
             var orderDto = _mapper.Map<OrderModelDTO, OrderDTO>(orderDTO);
@@ -32,7 +31,6 @@ namespace BLL.Services
             return result;
         }
 
-        
         public async Task<IEnumerable<GamesInfoDTO>> GetProductFromOrder(string orderId, string userId)
         {
             var result = await _repository.GetProductFromOrder(orderId, userId);       
@@ -52,15 +50,17 @@ namespace BLL.Services
 
             return productList;
         }        
+
         public async Task DeleteProductsFromOrder(DeletedGameModelDTO deletedGamesId)
         {
             var deletedGames = _mapper.Map<DeletedGameModelDTO, DeletedGameDTO>(deletedGamesId);
 
             await _repository.Delete(deletedGames);
         }
-        public async Task Buy(string userId)
-        {
-            await _repository.CompleteOrder(userId);
+
+        public async Task<bool> Buy(string userId)
+        {        
+            return await _repository.CompleteOrder(userId);
         }
     }
 }

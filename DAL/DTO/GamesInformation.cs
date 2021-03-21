@@ -13,10 +13,8 @@ namespace DAL.DTO
         public decimal? TotalRating { get; set; }
         public int Count { get; set; }
         public Rating Rating { get; set; }
-
         public string Logo { get; set; }    
         public string Background { get; set; }
-
         public decimal Price { get; set; }
     }
 }

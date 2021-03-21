@@ -14,19 +14,20 @@ namespace BLL.Services
 {
     public class GamesService : IGamesService
     {
-        private readonly IProductRepository _repository;
+        private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
         private readonly IS3Service _s3Service;
+
         public GamesService(IProductRepository repository,  IMapper mapper, IS3Service s3Service)
         {
-            _repository = repository;
+            _productRepository = repository;
             _mapper = mapper;
             _s3Service = s3Service;
         }
 
         public async Task<IEnumerable<TopCategoriesDTO>> GetTopCategories()
         {           
-            var result = await _repository.GetTopCategoriesAsync();
+            var result = await _productRepository.GetTopCategoriesAsync();
 
             var topCategories = result
                 .Select(s => new TopCategoriesDTO
@@ -38,11 +39,11 @@ namespace BLL.Services
             return topCategories;
         }
         public async Task<IEnumerable<GamesInfoDTO>> FindGameByName(SearchQueryDTO searchQuery)
-        {           
+        {
             var searchInfo = _mapper.Map<SearchQueryDTO, SearchQuery>(searchQuery);
 
-            var result = await _repository.FindByName(searchInfo);
-       
+            var result = await _productRepository.FindByName(searchInfo);
+
             var listOfGames = result.Select(s => new GamesInfoDTO
             {
                 Name = s.Name,
@@ -58,67 +59,73 @@ namespace BLL.Services
 
             return listOfGames;
         }
+
         public async Task<GamesInfoDTO> FindGameById(int id)
         {
           
-            var result = await _repository.FindById(id);
+            var result = await _productRepository.FindById(id);
 
             var gameInfo = _mapper.Map<Product, GamesInfoDTO>(result);
             
             return gameInfo;
         }
-        public async Task<GamesInfoDTO> CreateGame(CreateGameModelDTO gamesInfo)
-        {           
-            var response = _s3Service.UploadPictureToAws(gamesInfo).Result;
 
-            if (response.gamesInfoDTO != null)
+        public async Task<GamesInfoDTO> CreateGame(CreateGameModelDTO gamesInfoDto)
+        {                                 
+            var newGame = _mapper.Map<CreateGameModelDTO, GamesInformation>(gamesInfoDto);
+
+            var result = await _productRepository.Create(newGame);
+              
+            if(result != null)
             {
-                var newGame = _mapper.Map<GamesInfoDTO, GamesInformation>(response.gamesInfoDTO);
-
-                var result = await _repository.Create(newGame);
-
-                var newGameInfo = _mapper.Map<Product, GamesInfoDTO>(result);
-
-                return newGameInfo;
+                var logoPictureUrl = _s3Service.UploadPictureToAws(gamesInfoDto.Logo).Result;
+                var backgroundPictureUrl = _s3Service.UploadPictureToAws(gamesInfoDto.Logo).Result;
+                if(!String.IsNullOrEmpty(logoPictureUrl.PictureUrl) && !String.IsNullOrEmpty(backgroundPictureUrl.PictureUrl))
+                {
+                    var updatedModel = await _productRepository.AddPicturesUrlToProduct(result.Id, logoPictureUrl.PictureUrl, backgroundPictureUrl.PictureUrl);
+                    var fullFieldGameInfo = _mapper.Map<Product, GamesInfoDTO>(updatedModel);
+                    return fullFieldGameInfo;
+                }
             }
-            else
-            {
-                return null;
-            }
+
+            var createdGameWithoutPicture = _mapper.Map<Product, GamesInfoDTO>(result);
+            return createdGameWithoutPicture;                  
         }
 
         public async Task<bool> DeleteGameById(int id)
         {          
-            var result = await _repository.Delete(id);           
+            var result = await _productRepository.Delete(id);           
             return result;
         }
 
-        public async Task<GamesInfoDTO> EditGame(int id, EditGameModelDTO gamesInfo)
-        {
-            var response = _s3Service.UpdatePictureOnAws(gamesInfo).Result;
+        public async Task<GamesInfoDTO> EditGame(int id, EditGameModelDTO gamesInfoDto)
+        {                      
+            var newGameInfo = _mapper.Map<EditGameModelDTO, GamesInformation>(gamesInfoDto);
 
-            if (response != null)
+            var result = await _productRepository.Edit(gamesInfoDto.Id, newGameInfo);
+
+            if (result != null)
             {
-                var newGameInfo = _mapper.Map<GamesInfoDTO, GamesInformation>(response.gamesInfoDTO);
+                var logoPictureUrl = _s3Service.UploadPictureToAws(gamesInfoDto.Logo).Result;
+                var backgroundPictureUrl = _s3Service.UploadPictureToAws(gamesInfoDto.Logo).Result;
 
-                var result = await _repository.Edit(gamesInfo.Id, newGameInfo);
-
-                var updateGameInfo = _mapper.Map<Product, GamesInfoDTO>(result);
-
-                return updateGameInfo;
+                if (!String.IsNullOrEmpty(logoPictureUrl.PictureUrl) && !String.IsNullOrEmpty(backgroundPictureUrl.PictureUrl))
+                {
+                    var updatedModel = await _productRepository.AddPicturesUrlToProduct(result.Id, logoPictureUrl.PictureUrl, backgroundPictureUrl.PictureUrl);
+                    var updateGameInfo = _mapper.Map<Product, GamesInfoDTO>(updatedModel);
+                    return updateGameInfo;
+                }
             }
 
-            else 
-            {
-                return null;
-            }
+            var editedGameWithOldPictures = _mapper.Map<Product, GamesInfoDTO>(result);           
+            return editedGameWithOldPictures;          
         }
 
         public async Task<decimal?> RateTheGame(GameRatingDTO gameRatingDTO)
         {
             var newGameInfo = _mapper.Map<GameRatingDTO,GameRating >(gameRatingDTO);
 
-            var result = await _repository.Rate(newGameInfo);
+            var result = await _productRepository.Rate(newGameInfo);
 
             return result;
         }
@@ -127,7 +134,7 @@ namespace BLL.Services
         {
             var searchDto = _mapper.Map<SortAndFiltrDTO, SortAndFiltrInformation>(filtrDTO);
 
-            var result = await _repository.SortAndFiltr(searchDto);
+            var result = await _productRepository.SortAndFiltr(searchDto);
 
             var pageInfo = _mapper.Map<PageInformation, PageDTO>(result);
               

@@ -11,8 +11,8 @@ namespace DAL.Entities
         public int Id { get; set; }
         public Guid UserId { get; set; }
         public DateTime DateCreated { get; set; }
-        public DateTime? DateOrdered { get; set; } = null;
-        public bool Status { get; set; } = false;      
+        public DateTime? DateOrdered { get; set; }
+        public bool Status { get; set; }     
         public ICollection<OrderProduct> OrderProducts { get; set; }
     }
 }

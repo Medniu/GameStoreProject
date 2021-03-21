@@ -17,8 +17,7 @@ namespace DAL.Interfaces
         Task<bool> Delete(int id);
         Task<Product> Edit(int id, GamesInformation gamesInformation);
         Task<decimal?> Rate(GameRating gameRating);
-
         Task<PageInformation> SortAndFiltr(SortAndFiltrInformation filtrInformation);
-
+        Task<Product> AddPicturesUrlToProduct(int Id, string logoUrl, string backgroundUrl);
     }
 }

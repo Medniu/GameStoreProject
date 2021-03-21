@@ -20,8 +20,7 @@ namespace BLL.Services
         }
        
         public async Task SendEmailAsync(string email, string subject, string message)
-        {
-      
+        {    
             var emailMessage = new MimeMessage();
 
             emailMessage.From.Add(new MailboxAddress("My mail", this.config.Value.Email));
@@ -31,12 +30,12 @@ namespace BLL.Services
             {
                 Text = message
             };         
+
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync(this.config.Value.Host, this.config.Value.SmptPort, this.config.Value.UseSSL);
                 await client.AuthenticateAsync(this.config.Value.Email, this.config.Value.Password);
                 await client.SendAsync(emailMessage);
-
                 await client.DisconnectAsync(true);
             }           
         }

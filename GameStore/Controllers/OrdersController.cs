@@ -21,6 +21,7 @@ namespace GameStore.Controllers
         private readonly IOrderService _orderService; 
         private readonly IMapper _mapper;
         private readonly IUserHelper _userHelper;
+
         public OrdersController(IOrderService orderService, IMapper mapper, IUserHelper userHelper)
         {
             _orderService = orderService;
@@ -49,7 +50,6 @@ namespace GameStore.Controllers
                     return BadRequest();
                 }                       
             }
-
             else
             {
                 return BadRequest();
@@ -59,8 +59,7 @@ namespace GameStore.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetProductFromCurrentOrder([FromQuery] string orderId)
-        {
-          
+        {        
             var userId = _userHelper.GetUserId();
 
             var result = await _orderService.GetProductFromOrder(orderId,userId);
@@ -91,9 +90,14 @@ namespace GameStore.Controllers
         {
             var userId = _userHelper.GetUserId();
 
-            await _orderService.Buy(userId);
-
-            return StatusCode(204);
+            if (await _orderService.Buy(userId))
+            {
+                return StatusCode(204);
+            }
+            else
+            {
+                return StatusCode(404);
+            }
         }
     }
 }

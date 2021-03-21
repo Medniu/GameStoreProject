@@ -23,6 +23,7 @@ namespace GameStore.Controllers
     {     
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+
         public AuthController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
@@ -34,7 +35,6 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SignIn([FromBody] LoginModel loginModel)
         {
-
             if (ModelState.IsValid)
             {
                 var userDto = _mapper.Map<LoginModel, UserDTO>(loginModel);
@@ -79,7 +79,6 @@ namespace GameStore.Controllers
                     return BadRequest(ModelState);                  
                 }
             }
-
             else
             {
                 return BadRequest(ModelState);

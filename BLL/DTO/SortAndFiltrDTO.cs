@@ -10,7 +10,6 @@ namespace BLL.DTO
         public int? FiltrByAge { get; set; }
         public string? SortByRating { get; set; }
         public string? SortByPrice { get; set; }
-
         public int? Page { get; set; }
         public int? PageSize { get; set; } 
     }

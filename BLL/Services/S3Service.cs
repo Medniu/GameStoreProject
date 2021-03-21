@@ -6,6 +6,7 @@ using BLL.DTO;
 using BLL.Interfaces;
 using BLL.Response;
 using BLL.Settings;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -19,103 +20,26 @@ namespace BLL.Services
     {
         private readonly IAmazonS3 _client;
         private readonly IOptions<AwsSettings> _config;
-        private readonly IMapper _mapper;
-        public S3Service(IAmazonS3 client, IOptions<AwsSettings> config, IMapper mapper)
+
+        public S3Service(IAmazonS3 client, IOptions<AwsSettings> config)
         {
             _client = client;
             _config = config;
-            _mapper = mapper;
         }
 
-        public async Task<AwsResponse> UploadPictureToAws(CreateGameModelDTO createGamesModelDTO)
-        {           
-            var gamesInfoDTO = _mapper.Map<CreateGameModelDTO, GamesInfoDTO>(createGamesModelDTO);
-
-            try
-            {
-                using (var newMemoryStream = new MemoryStream())
-                {
-
-                    createGamesModelDTO.Logo.CopyTo(newMemoryStream);
-
-                    var uploadRequest = new TransferUtilityUploadRequest
-                    {
-                        InputStream = newMemoryStream,
-                        Key = createGamesModelDTO.Logo.FileName,
-                        BucketName = _config.Value.BucketName,
-                        CannedACL = S3CannedACL.PublicRead
-                    };
-
-                    var fileTransferUtility = new TransferUtility(_client);
-                    await fileTransferUtility.UploadAsync(uploadRequest);
-
-                    var expiryUrlRequest = new GetPreSignedUrlRequest()
-                    {
-                        BucketName = _config.Value.BucketName,
-                        Key = createGamesModelDTO.Logo.FileName,
-                        Expires = DateTime.Now.AddHours(1)
-                    };
-
-                    string logoUrl = _client.GetPreSignedURL(expiryUrlRequest);
-                    gamesInfoDTO.Logo = logoUrl;
-
-                }
-
-                using (var newMemoryStream = new MemoryStream())
-                {
-
-                    createGamesModelDTO.Background.CopyTo(newMemoryStream);
-                    var uploadRequest = new TransferUtilityUploadRequest
-                    {
-                        InputStream = newMemoryStream,
-                        Key = createGamesModelDTO.Background.FileName,
-                        BucketName = _config.Value.BucketName,
-                        CannedACL = S3CannedACL.PublicRead
-                    };
-
-                    var fileTransferUtility = new TransferUtility(_client);
-                    await fileTransferUtility.UploadAsync(uploadRequest);
-
-                    var expiryUrlRequest = new GetPreSignedUrlRequest()
-                    {
-                        BucketName = _config.Value.BucketName,
-                        Key = createGamesModelDTO.Background.FileName,
-                        Expires = DateTime.Now.AddHours(1)
-                    };
-
-                    string backUrl = _client.GetPreSignedURL(expiryUrlRequest);
-                    gamesInfoDTO.Background = backUrl;
-                }
-            }
-            catch (AmazonS3Exception amazonException)
-            {
-                return new AwsResponse
-                {
-                    Message = amazonException.Message,
-                    Status = amazonException.StatusCode,
-                    gamesInfoDTO = null
-                };
-            }
-            return new AwsResponse
-            {
-                gamesInfoDTO = gamesInfoDTO
-            };
-        }
-
-        public async Task<AwsResponse> UpdatePictureOnAws(EditGameModelDTO editGameModelDto)
+        public async Task<AwsResponse> UploadPictureToAws(IFormFile formFile)
         {
-            var gamesInfoDTO = _mapper.Map<EditGameModelDTO, GamesInfoDTO>(editGameModelDto);
             try
             {
                 using (var newMemoryStream = new MemoryStream())
                 {
 
-                    editGameModelDto.Logo.CopyTo(newMemoryStream);
+                    formFile.CopyTo(newMemoryStream);
 
                     var uploadRequest = new TransferUtilityUploadRequest
                     {
                         InputStream = newMemoryStream,
-                        Key = editGameModelDto.Logo.FileName,
+                        Key = formFile.FileName,
                         BucketName = _config.Value.BucketName,
                         CannedACL = S3CannedACL.PublicRead
                     };
@@ -126,39 +50,15 @@ namespace BLL.Services
                     var expiryUrlRequest = new GetPreSignedUrlRequest()
                     {
                         BucketName = _config.Value.BucketName,
-                        Key = editGameModelDto.Logo.FileName,
+                        Key = formFile.FileName,
                         Expires = DateTime.Now.AddHours(1)
                     };
 
                     string logoUrl = _client.GetPreSignedURL(expiryUrlRequest);
-                    gamesInfoDTO.Logo = logoUrl;
-
-                }
-                       
-                using (var newMemoryStream = new MemoryStream())
-                {
-
-                    editGameModelDto.Background.CopyTo(newMemoryStream);
-                    var uploadRequest = new TransferUtilityUploadRequest
+                    return new AwsResponse
                     {
-                        InputStream = newMemoryStream,
-                        Key = editGameModelDto.Background.FileName,
-                        BucketName = _config.Value.BucketName,
-                        CannedACL = S3CannedACL.PublicRead
+                        PictureUrl = logoUrl
                     };
-
-                    var fileTransferUtility = new TransferUtility(_client);
-                    await fileTransferUtility.UploadAsync(uploadRequest);
-
-                    var expiryUrlRequest = new GetPreSignedUrlRequest()
-                    {
-                        BucketName = _config.Value.BucketName,
-                        Key = editGameModelDto.Background.FileName,
-                        Expires = DateTime.Now.AddHours(1)
-                    };
-
-                    string backUrl = _client.GetPreSignedURL(expiryUrlRequest);
-                    gamesInfoDTO.Background = backUrl;
                 }
             }
             catch (AmazonS3Exception amazonException)
@@ -167,14 +67,9 @@ namespace BLL.Services
                 {
                     Message = amazonException.Message,
                     Status = amazonException.StatusCode,
-                    gamesInfoDTO = null
+                    PictureUrl = null
                 };
-            }
-
-            return new AwsResponse
-            {
-                gamesInfoDTO = gamesInfoDTO
-            };
-        }
+            }        
+        }               
     }
 }

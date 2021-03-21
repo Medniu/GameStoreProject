@@ -10,6 +10,6 @@ namespace BLL.Response
     {
         public string? Message { get; set; }
         public HttpStatusCode? Status { get; set; }
-        public GamesInfoDTO? gamesInfoDTO { get; set; }
+        public string PictureUrl { get; set; }
     }
 }

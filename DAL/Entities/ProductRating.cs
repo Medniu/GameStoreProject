@@ -15,6 +15,6 @@ namespace DAL.Entities
 
         [Column("Rating", TypeName = "decimal(5,1)")]
         public decimal Rating { get; set; }
-        public DateTime DateTimeCreated { get; set; } = DateTime.UtcNow;
+        public DateTime DateTimeCreated { get; set; } 
     }
 }

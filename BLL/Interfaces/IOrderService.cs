@@ -11,6 +11,6 @@ namespace BLL.Interfaces
         Task<bool> AddProductToOrder(OrderModelDTO orderDTO);
         Task<IEnumerable<GamesInfoDTO>> GetProductFromOrder(string orderId, string userId);
         Task DeleteProductsFromOrder(DeletedGameModelDTO deletedGamesId);
-        Task Buy(string userId);
+        Task<bool> Buy(string userId);
     }
 }

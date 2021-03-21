@@ -23,6 +23,7 @@ namespace GameStore.Controllers
         private readonly IGamesService _gamesService;
         private readonly IMapper _mapper;
         private readonly IUserHelper _userHelper;    
+
         public GamesController(IGamesService gamesService, IMapper mapper, IUserHelper userHelper)
         {
             _gamesService = gamesService;
@@ -51,6 +52,7 @@ namespace GameStore.Controllers
             {
                 searchRequest.Limit = 10;
             }
+
             var searchDto = _mapper.Map<SearchRequestModel, SearchQueryDTO>(searchRequest);
 
             var result = await _gamesService.FindGameByName(searchDto);
@@ -72,8 +74,8 @@ namespace GameStore.Controllers
         public async Task<IActionResult> FindGame(int id)
         {
             var result = await _gamesService.FindGameById(id);
-
             var gamesInfoViewModel = _mapper.Map<GamesInfoDTO, GameInfoViewModel>(result);
+
             if (gamesInfoViewModel == null)
             {
                 return StatusCode(404);

@@ -38,6 +38,7 @@ namespace BLL.Services
             _emailService = emailService;
             _mapper = mapper;
         }
+
         public async Task<bool> ChangePassword(string userId, UserDTO userDTO )
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -54,10 +55,10 @@ namespace BLL.Services
                 return false;
             }                 
         }
+
         public async Task<ChangedUserDTO> ChangeInfo(string userId, UserDTO userDTO)
         {
-            var changedUserDto = new ChangedUserDTO();
-            //var resultDto = new ResultDTO();
+            var changedUserDto = new ChangedUserDTO();          
             var user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
@@ -87,6 +88,7 @@ namespace BLL.Services
                 return changedUserDto;
             }
         }
+
         public async Task<UserDTO> GetInfo (string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -95,6 +97,7 @@ namespace BLL.Services
                            
             return  userDto;                   
         }
+
         public async Task<bool> Create(UserDTO userDto)
         {                                 
             var user = _mapper.Map<UserDTO, User>(userDto);
@@ -116,6 +119,7 @@ namespace BLL.Services
                 return false;
             }       
         }      
+
         public async Task<JwtDTO> Authorize(UserDTO userDTO)
         {
             var jwtDto = new JwtDTO();
@@ -145,25 +149,28 @@ namespace BLL.Services
                 return jwtDto;
             }
         }     
+
         public void Dispose()
         {
             _applicationDbContext.Dispose();
             _roleManager.Dispose();
             _userManager.Dispose();
         }
+
         public async Task SaveAsync()
         {
             await _applicationDbContext.SaveChangesAsync();
         }
+
         public string GenerateJwt(User user, IList<string> roles)
         {
             var claims = new List<Claim>
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-                };
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            };
 
             var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r));
             claims.AddRange(roleClaims);

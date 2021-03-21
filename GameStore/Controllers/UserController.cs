@@ -25,12 +25,14 @@ namespace GameStore.Controllers
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly IUserHelper _userHelper;
+
         public UserController(IUserService userService, IMapper mapper, IUserHelper userHelper)
         {
             _userService = userService;
             _mapper = mapper;
             _userHelper = userHelper;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetUserInfo()
         {          

@@ -34,7 +34,6 @@ namespace DAL.Repository
 
             if (order != null && product != null)
             {
-
                 OrderProduct orderProduct = new OrderProduct
                 {
                     DateCreated = DateTime.Now,
@@ -47,7 +46,6 @@ namespace DAL.Repository
                 await context.SaveChangesAsync();
                 return true;
             }
-
             else
             {
                 if (product == null)
@@ -183,6 +181,7 @@ namespace DAL.Repository
                 return false;
             }
         }
+
         public async Task<bool> CompleteOrder(string userId)
         {            
             if (Guid.TryParse(userId, out var UserGuidId))
@@ -199,7 +198,7 @@ namespace DAL.Repository
                         .Select(x => x.op)
                         .ToListAsync();
 
-                if (IsEnoughAmountOfProduct(orderProducts).Result)
+                if (IsEnoughAmountOfProduct(orderProducts).Result && orderProducts.Count != 0)
                 {
                     order.Status = true;
                     order.DateOrdered = DateTime.UtcNow;
@@ -222,7 +221,6 @@ namespace DAL.Repository
                 {
                     return false;
                 }
-
                 product.Count -= item.Quantity;  
             }
 

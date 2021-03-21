@@ -33,6 +33,7 @@ namespace DAL.Repository
                     .ToListAsync();                                                           
             return categoryTable;
         }
+
         public async Task<IEnumerable<GamesInformation>> FindByName (SearchQuery searchQuery)
         {                  
             var listOfGames = await context.Products               
@@ -69,6 +70,7 @@ namespace DAL.Repository
         {
             var newProduct = _mapper.Map<GamesInformation, Product>(gamesInformation);
             newProduct.DateCreated = DateTime.UtcNow;
+            newProduct.IsDeleted = false;
 
             var result = await context.Products.AddAsync(newProduct);
 
@@ -116,6 +118,8 @@ namespace DAL.Repository
             if (product == null)
             {
                 var newProduct = _mapper.Map<GameRating, ProductRating>(gameRating);
+                newProduct.DateTimeCreated = DateTime.UtcNow;
+
                 await context.ProductRatings.AddAsync(newProduct);
                 await context.SaveChangesAsync();               
             }
@@ -135,7 +139,6 @@ namespace DAL.Repository
 
         public async Task<PageInformation> SortAndFiltr(SortAndFiltrInformation  filtrInformation)
         {
-
             var listOfGames = context.Products
                 .Where(s => s.IsDeleted != true)
                 .Select(s => new GamesInformation
@@ -149,16 +152,16 @@ namespace DAL.Repository
                     Background = s.Background,
                     Rating = s.Rating,
                     Count = s.Count
-                }).ToList() ;
+                });
 
-            var sortedList = await SortAndFiltrGame(listOfGames, filtrInformation);
+            var sortedList = SortAndFiltrGame(listOfGames, filtrInformation);
 
             var pageInfo = await GetInfoOfCurrentPage(sortedList, filtrInformation);
         
             return pageInfo;
         }
 
-        public async Task<PageInformation> GetInfoOfCurrentPage(List<GamesInformation> listOfGames,   SortAndFiltrInformation filtrInformation)
+        public async Task<PageInformation> GetInfoOfCurrentPage(IQueryable<GamesInformation> listOfGames,   SortAndFiltrInformation filtrInformation)
         {
             PageInformation pageInformation = new PageInformation
             {
@@ -167,49 +170,52 @@ namespace DAL.Repository
                 TotalItems = listOfGames.Count(),                
             };
 
-            pageInformation.GamesInformation = listOfGames
+            pageInformation.GamesInformation = await listOfGames
                 .Skip((int)(filtrInformation.PageSize * (filtrInformation.Page - 1)))
                 .Take((int)filtrInformation.PageSize)              
-                .ToList();
+                .ToListAsync();
 
             return pageInformation;
         }
-        public async Task<List<GamesInformation>> SortAndFiltrGame(List<GamesInformation> listOfGames, SortAndFiltrInformation filtrInformation)
+
+        public IQueryable<GamesInformation> SortAndFiltrGame(IQueryable<GamesInformation> listOfGames, SortAndFiltrInformation filtrInformation)
         {
             if (listOfGames != null && filtrInformation != null)
             {
-                listOfGames = await FiltrGames(listOfGames, filtrInformation);
-                listOfGames = await SortGames(listOfGames, filtrInformation);
+                listOfGames = FiltrGames(listOfGames, filtrInformation);
+                listOfGames = SortGames(listOfGames, filtrInformation);
             }
             return listOfGames;
         }
-        public async Task<List<GamesInformation>> FiltrGames (List<GamesInformation> listOfGames, SortAndFiltrInformation filtrInformation)
+
+        public IQueryable<GamesInformation> FiltrGames (IQueryable<GamesInformation> listOfGames, SortAndFiltrInformation filtrInformation)
         {        
             if (listOfGames != null && filtrInformation.FiltrByGenres != null) 
             {
                 Categories categories = (Categories)Enum.Parse(typeof(Categories), filtrInformation.FiltrByGenres, true);
-                listOfGames = await listOfGames.AsQueryable().Where(p => p.Category == categories).ToListAsync();
+                listOfGames = listOfGames.Where(p => p.Category == categories);
             }
 
             if (listOfGames != null && filtrInformation.FiltrByAge != null)
             {
                 Rating rating = (Rating)Enum.Parse(typeof(Rating), filtrInformation.FiltrByAge.ToString(), true);
-                listOfGames = await listOfGames.AsQueryable().Where(p => p.Rating == rating).ToListAsync();
+                listOfGames = listOfGames.Where(p => p.Rating == rating);
             }
 
             return listOfGames;
         }
-        public async Task<List<GamesInformation>> SortGames(List<GamesInformation> listOfGames, SortAndFiltrInformation filtrInformation)
+
+        public IQueryable<GamesInformation> SortGames(IQueryable<GamesInformation> listOfGames, SortAndFiltrInformation filtrInformation)
         {
             if (listOfGames != null && filtrInformation.SortByPrice != null)
             {
                 switch (filtrInformation.SortByPrice.ToLower())
                 {
                     case "asc":
-                        listOfGames = await listOfGames.AsQueryable().OrderBy(u => u.Price).ToListAsync();
+                        listOfGames = listOfGames.OrderBy(u => u.Price);
                         break;
                     case "desc":
-                        listOfGames = await listOfGames.AsQueryable().OrderByDescending(u => u.Price).ToListAsync();
+                        listOfGames = listOfGames.OrderByDescending(u => u.Price);
                         break;                   
                 }                                               
             }
@@ -219,16 +225,17 @@ namespace DAL.Repository
                 switch (filtrInformation.SortByRating.ToLower())
                 {
                     case "asc":
-                        listOfGames = await listOfGames.AsQueryable().OrderBy(u => u.TotalRating).ToListAsync();
+                        listOfGames = listOfGames.AsQueryable().OrderBy(u => u.TotalRating);
                         break;
                     case "desc":
-                        listOfGames = await listOfGames.AsQueryable().OrderByDescending(u => u.TotalRating).ToListAsync();
+                        listOfGames = listOfGames.AsQueryable().OrderByDescending(u => u.TotalRating);
                         break;
                 }
             }
 
             return listOfGames;
         }
+
         public Product UpdateGameProperties(Product product, GamesInformation gamesInformation)
         {
             product.Logo = gamesInformation.Logo;
@@ -239,6 +246,21 @@ namespace DAL.Repository
             product.Count = gamesInformation.Count; 
             
             return product;
-        }     
+        }
+
+        public async Task<Product> AddPicturesUrlToProduct(int Id, string logoUrl, string backgroundUrl)
+        {
+            var product = await context.Products.FirstOrDefaultAsync(p => p.Id == Id);
+
+            if(product != null)
+            {
+                product.Logo = logoUrl;
+                product.Background = backgroundUrl;
+            }
+
+            context.Products.Update(product);
+            await context.SaveChangesAsync();
+            return product;
+        }
     }
 }

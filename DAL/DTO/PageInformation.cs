@@ -6,7 +6,6 @@ namespace DAL.DTO
 {
     public class PageInformation
     {
-        //public ICollection<GamesInformation> GamesInformation { get; set; }
         public List<GamesInformation> GamesInformation { get; set; }
         public int CurrentPage { get; set; }
         public int TotalItems { get; set; }
