@@ -24,7 +24,8 @@ namespace DAL.Repository
 
         public async Task<IEnumerable<CategoryInformation>> GetTopCategoriesAsync()
         {
-            var categoryTable = await context.Products                  
+            var categoryTable = await context.Products
+                    .AsNoTracking()                 
                     .Where(w =>w.IsDeleted != true)
                     .GroupBy(g => g.Category)
                     .OrderByDescending(g => g.Count())
@@ -36,7 +37,8 @@ namespace DAL.Repository
 
         public async Task<IEnumerable<GamesInformation>> FindByName (SearchQuery searchQuery)
         {                  
-            var listOfGames = await context.Products               
+            var listOfGames = await context.Products
+                .AsNoTracking()
                 .Where(w => w.Name.Contains(searchQuery.Term))
                 .Where(w =>w.IsDeleted !=true)
                 .Select(s => new GamesInformation
@@ -60,6 +62,7 @@ namespace DAL.Repository
         public async Task<Product> FindById(int id)
         {
             Product gameInfo = await context.Products
+                .AsNoTracking()
                 .Where(w => w.IsDeleted != true)
                 .FirstOrDefaultAsync(p => p.Id == id);
             
@@ -110,12 +113,12 @@ namespace DAL.Repository
 
         public async Task<decimal?> Rate(GameRating gameRating)
         {
-            var product = await context.ProductRatings
+            var productRating = await context.ProductRatings
                 .Where(p => p.ProductId == gameRating.ProductId)
                 .Where(u => u.UserId.ToString() == gameRating.UserId)
                 .FirstOrDefaultAsync();
 
-            if (product == null)
+            if (productRating == null)
             {
                 var newProduct = _mapper.Map<GameRating, ProductRating>(gameRating);
                 newProduct.DateTimeCreated = DateTime.UtcNow;
@@ -125,12 +128,13 @@ namespace DAL.Repository
             }
             else
             {
-                product.Rating = gameRating.Rating;
-                context.ProductRatings.Update(product);
+                productRating.Rating = gameRating.Rating;
+                context.ProductRatings.Update(productRating);
                 await context.SaveChangesAsync();
             }
 
             Product updatedGame = await context.Products
+                .AsNoTracking()
                 .Where(w => w.IsDeleted != true)
                 .FirstOrDefaultAsync(p => p.Id == gameRating.ProductId);
 
@@ -140,6 +144,7 @@ namespace DAL.Repository
         public async Task<PageInformation> SortAndFiltr(SortAndFiltrInformation  filtrInformation)
         {
             var listOfGames = context.Products
+                .AsNoTracking()
                 .Where(s => s.IsDeleted != true)
                 .Select(s => new GamesInformation
                 {

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210312082131_Add Orders")]
-    partial class AddOrders
+    [Migration("20210322080206_update-property totalrating")]
+    partial class updatepropertytotalrating
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,7 +31,7 @@ namespace DAL.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOrdered")
+                    b.Property<DateTime?>("DateOrdered")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Status")
@@ -56,6 +56,9 @@ namespace DAL.Migrations
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -83,8 +86,7 @@ namespace DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Background")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("varchar(500)")
                         .HasColumnName("BackGround");
 
                     b.Property<int>("Category")
@@ -104,8 +106,7 @@ namespace DAL.Migrations
                         .HasColumnName("IsDeleted");
 
                     b.Property<string>("Logo")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("varchar(500)")
                         .HasColumnName("Logo");
 
                     b.Property<string>("Name")

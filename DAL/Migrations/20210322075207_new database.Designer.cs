@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210312144752_nullable OrderedDate")]
-    partial class nullableOrderedDate
+    [Migration("20210322075207_new database")]
+    partial class newdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,6 +57,9 @@ namespace DAL.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -83,8 +86,7 @@ namespace DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Background")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("varchar(500)")
                         .HasColumnName("BackGround");
 
                     b.Property<int>("Category")
@@ -104,8 +106,7 @@ namespace DAL.Migrations
                         .HasColumnName("IsDeleted");
 
                     b.Property<string>("Logo")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("varchar(500)")
                         .HasColumnName("Logo");
 
                     b.Property<string>("Name")
@@ -124,8 +125,7 @@ namespace DAL.Migrations
                     b.Property<decimal?>("TotalRating")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("decimal(5,1)")
-                        .HasColumnName("TotalRating")
-                        .HasComputedColumnSql("dbo.GetValue(Id)");
+                        .HasColumnName("TotalRating");
 
                     b.HasKey("Id");
 

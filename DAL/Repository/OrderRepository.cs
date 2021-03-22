@@ -25,10 +25,12 @@ namespace DAL.Repository
         public async Task<bool> AddToOrder(OrderDTO orderDTO)
         {
             Product product = await context.Products
+               .AsNoTracking()
                .Where(w => w.IsDeleted != true)
                .FirstOrDefaultAsync(p => p.Id == orderDTO.ProductId);
 
             Order order = await context.Orders
+                .AsNoTracking()
                 .Where(w => w.Status == false)
                 .FirstOrDefaultAsync(p => p.UserId.ToString() == orderDTO.UserId);
 
@@ -59,6 +61,7 @@ namespace DAL.Repository
                     await context.SaveChangesAsync();
 
                     newOrder = await context.Orders
+                    .AsNoTracking()
                     .Where(w => w.Status == false)
                     .FirstOrDefaultAsync(p => p.UserId.ToString() == orderDTO.UserId);
 
@@ -85,6 +88,7 @@ namespace DAL.Repository
                 if (Guid.TryParse(userId, out var guid))
                 {
                     var result = await context.Orders
+                            .AsNoTracking()
                             .Where(x => x.Status == false)
                             .Where(x => x.UserId == guid)
                             .Join(context.OrderProducts,
@@ -118,6 +122,7 @@ namespace DAL.Repository
                 if (int.TryParse(orderId, out int id) && Guid.TryParse(userId, out var guid))
                 {
                     var result = await context.Orders
+                            .AsNoTracking()
                             .Where(x => x.Id == id)
                             .Where(x => x.UserId == guid)
                             .Join(context.OrderProducts,

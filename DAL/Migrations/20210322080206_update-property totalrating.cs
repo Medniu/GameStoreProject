@@ -2,7 +2,7 @@
 
 namespace DAL.Migrations
 {
-    public partial class Computedproperty : Migration
+    public partial class updatepropertytotalrating : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,10 +10,11 @@ namespace DAL.Migrations
                 name: "TotalRating",
                 table: "Products",
                 type: "decimal(5,1)",
-                nullable: false,
+                nullable: true,
                 computedColumnSql: "dbo.GetValue(Id)",
                 oldClrType: typeof(decimal),
-                oldType: "decimal(5,1)");
+                oldType: "decimal(5,1)",
+                oldNullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -22,9 +23,10 @@ namespace DAL.Migrations
                 name: "TotalRating",
                 table: "Products",
                 type: "decimal(5,1)",
-                nullable: false,
+                nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "decimal(5,1)",
+                oldNullable: true,
                 oldComputedColumnSql: "dbo.GetValue(Id)");
         }
     }

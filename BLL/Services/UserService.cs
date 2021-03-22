@@ -15,6 +15,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BLL.Services
 {
@@ -26,10 +27,11 @@ namespace BLL.Services
         private readonly JwtSettings _jwtSettings;
         private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
+        private readonly IMemoryCache _cache;
 
         public UserService( UserManager<User> userManager, RoleManager<Role> roleManager,
                             ApplicationDbContext dbContext, IOptionsSnapshot<JwtSettings> jwtSettings,
-                            IEmailService emailService, IMapper mapper)
+                            IEmailService emailService, IMapper mapper, IMemoryCache cache)
         {
             _applicationDbContext = dbContext;
             _userManager = userManager;
@@ -37,6 +39,7 @@ namespace BLL.Services
             _jwtSettings = jwtSettings.Value;
             _emailService = emailService;
             _mapper = mapper;
+            _cache = cache;
         }
 
         public async Task<bool> ChangePassword(string userId, UserDTO userDTO )
@@ -91,11 +94,20 @@ namespace BLL.Services
 
         public async Task<UserDTO> GetInfo (string userId)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            User user = null;
+
+            if (!_cache.TryGetValue(userId, out user))
+            {
+                user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    _cache.Set(user.Id, user,
+                        new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+                }
+            }
 
             var userDto = _mapper.Map<User, UserDTO>(user);
-                           
-            return  userDto;                   
+            return userDto;               
         }
 
         public async Task<bool> Create(UserDTO userDto)

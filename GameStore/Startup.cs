@@ -26,6 +26,8 @@ using DAL.Interfaces;
 using DAL.Repository;
 using Amazon.S3;
 using Amazon.Runtime;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.IO.Compression;
 
 namespace GameStore
 {
@@ -42,7 +44,19 @@ namespace GameStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.AddControllers();           
+            services.AddControllers();
+
+            services.AddResponseCompression(options => {
+                options.EnableForHttps = true;                             
+                options.Providers.Add<GzipCompressionProvider>();
+            });
+
+            services.AddMemoryCache();
+
+            services.Configure<GzipCompressionProviderOptions>(options =>
+            {
+                options.Level = CompressionLevel.Optimal;
+            });
 
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
@@ -129,10 +143,11 @@ namespace GameStore
             {
                 app.UseExceptionHandler("/Error");              
                 app.UseHsts();
-            }         
-            app.UseHttpsRedirection();       
-
-            app.UseRouting();
+            }   
+            
+            app.UseHttpsRedirection();
+            app.UseResponseCompression();
+            app.UseRouting();           
 
             app.UseAuthentication();
             app.UseAuthorization();                       
