@@ -63,6 +63,7 @@ namespace BLL.Services
         {
             var changedUserDto = new ChangedUserDTO();          
             var user = await _userManager.FindByIdAsync(userId);
+
             if (user != null)
             {
                 user.UserName = userDTO.Name;
@@ -72,6 +73,11 @@ namespace BLL.Services
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
+                    if (_cache.TryGetValue(userId, out user))
+                    {
+                        _cache.Remove(userId);
+                    }
+
                     var userDto = _mapper.Map<User, UserDTO>(user);
                     changedUserDto.Result = true;
                     changedUserDto.UserDTO = userDto;                    
