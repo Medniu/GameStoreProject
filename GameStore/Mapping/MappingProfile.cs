@@ -37,7 +37,8 @@ namespace GameStore.Mapping
 
             CreateMap<JwtDTO, JwtViewModel>()
                .ForMember(u => u.Result, opt => opt.MapFrom(ur => ur.Result))
-               .ForMember(u => u.JwtToken, opt => opt.MapFrom(ur => ur.JwtToken));
+               .ForMember(u => u.JwtToken, opt => opt.MapFrom(ur => ur.JwtToken))
+               .ForMember(u =>u.UserId, opt => opt.MapFrom(ur =>ur.UserId));
 
             CreateMap<UserDTO, UserProfileViewModel>()
                .ForMember(u => u.Email, opt => opt.MapFrom(ur => ur.Email))

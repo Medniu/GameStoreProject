@@ -145,7 +145,7 @@ namespace BLL.Services
             var user = _userManager.Users.SingleOrDefault(u => u.Email == userDTO.Email);
 
             if (user is null)
-            {
+            {                
                 jwtDto.Result = false;
                 jwtDto.JwtToken = string.Empty;
                 return jwtDto;
@@ -158,6 +158,7 @@ namespace BLL.Services
                 var roles = await _userManager.GetRolesAsync(user);
                 jwtDto.Result = true;
                 jwtDto.JwtToken = GenerateJwt(user,roles);
+                jwtDto.UserId = user.Id;
                 return jwtDto;
             }
             else

@@ -93,6 +93,7 @@ namespace GameStore
             services.AddScoped<IEmailService, EmailService>();            
             services.AddScoped<IGamesService, GamesService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ILogService, LogService>();
 
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();

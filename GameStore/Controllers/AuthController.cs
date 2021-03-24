@@ -23,11 +23,13 @@ namespace GameStore.Controllers
     {     
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly ILogService _logService;
 
-        public AuthController(IUserService userService, IMapper mapper)
+        public AuthController(IUserService userService, IMapper mapper, ILogService logService)
         {
             _userService = userService;
-            _mapper = mapper;          
+            _mapper = mapper;
+            _logService = logService;
         }       
 
         [HttpPost]
@@ -36,19 +38,23 @@ namespace GameStore.Controllers
         public async Task<IActionResult> SignIn([FromBody] LoginModel loginModel)
         {
             if (ModelState.IsValid)
-            {
-                var userDto = _mapper.Map<LoginModel, UserDTO>(loginModel);
-              
+            {                                               
+                var userDto = _mapper.Map<LoginModel, UserDTO>(loginModel);               
+
                 var result = await _userService.Authorize(userDto);
 
                 var jwtViewModel = _mapper.Map<JwtDTO, JwtViewModel>(result);
 
                 if (jwtViewModel.Result)
                 {
+                    _logService.SuccessSignInLogs(jwtViewModel.UserId);
+
                     return Ok(jwtViewModel.JwtToken);
                 }
                 else
                 {
+                    _logService.UnsuccessSignInLogs();
+
                     return BadRequest();
                 }
             }
@@ -56,7 +62,6 @@ namespace GameStore.Controllers
             {
                 return BadRequest(ModelState);
             }
-
         }
 
         [HttpPost]
