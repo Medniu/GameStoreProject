@@ -47,12 +47,12 @@ namespace GameStore.Controllers
                 }
                 else
                 {
-                    return BadRequest();
+                    return BadRequest("Something go wrong, please try again later");
                 }                       
             }
             else
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
         }
