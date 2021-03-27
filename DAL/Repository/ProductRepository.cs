@@ -39,8 +39,7 @@ namespace DAL.Repository
         {                  
             var listOfGames = await context.Products
                 .AsNoTracking()
-                .Where(w => w.Name.Contains(searchQuery.Term))
-                .Where(w =>w.IsDeleted !=true)
+                .Where(w => w.Name.Contains(searchQuery.Term) && w.IsDeleted != true)                
                 .Select(s => new GamesInformation
                 {
                     Name = s.Name,
@@ -114,8 +113,7 @@ namespace DAL.Repository
         public async Task<decimal?> Rate(GameRating gameRating)
         {
             var productRating = await context.ProductRatings
-                .Where(p => p.ProductId == gameRating.ProductId)
-                .Where(u => u.UserId.ToString() == gameRating.UserId)
+                .Where(p => p.ProductId == gameRating.ProductId && p.UserId.ToString() == gameRating.UserId)               
                 .FirstOrDefaultAsync();
 
             if (productRating == null)

@@ -89,8 +89,7 @@ namespace DAL.Repository
                 {
                     var result = await context.Orders
                             .AsNoTracking()
-                            .Where(x => x.Status == false)
-                            .Where(x => x.UserId == guid)
+                            .Where(x => x.Status == false && x.UserId == guid)                           
                             .Join(context.OrderProducts,
                             o => o.Id,
                             op => op.OrderId,
@@ -123,8 +122,7 @@ namespace DAL.Repository
                 {
                     var result = await context.Orders
                             .AsNoTracking()
-                            .Where(x => x.Id == id)
-                            .Where(x => x.UserId == guid)
+                            .Where(x => x.Id == id && x.UserId == guid)
                             .Join(context.OrderProducts,
                             o => o.Id,
                             op => op.OrderId,
