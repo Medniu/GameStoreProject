@@ -80,12 +80,10 @@ namespace BLL.Services
             {
                 var logoPictureUrl = _s3Service.UploadPictureToAws(gamesInfoDto.Logo).Result;
                 var backgroundPictureUrl = _s3Service.UploadPictureToAws(gamesInfoDto.Logo).Result;
-                if(!String.IsNullOrEmpty(logoPictureUrl.PictureUrl) && !String.IsNullOrEmpty(backgroundPictureUrl.PictureUrl))
-                {
-                    var updatedModel = await _productRepository.AddPicturesUrlToProduct(result.Id, logoPictureUrl.PictureUrl, backgroundPictureUrl.PictureUrl);
-                    var fullFieldGameInfo = _mapper.Map<Product, GamesInfoDTO>(updatedModel);
-                    return fullFieldGameInfo;
-                }
+                
+                var updatedModel = await _productRepository.AddPicturesUrlToProduct(result.Id, logoPictureUrl.PictureUrl, backgroundPictureUrl.PictureUrl);
+                var fullFieldGameInfo = _mapper.Map<Product, GamesInfoDTO>(updatedModel);
+                return fullFieldGameInfo;
             }
 
             var createdGameWithoutPicture = _mapper.Map<Product, GamesInfoDTO>(result);

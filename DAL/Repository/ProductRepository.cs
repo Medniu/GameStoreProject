@@ -255,9 +255,13 @@ namespace DAL.Repository
         {
             var product = await context.Products.FirstOrDefaultAsync(p => p.Id == Id);
 
-            if(product != null)
+            if(!String.IsNullOrEmpty(logoUrl))
             {
-                product.Logo = logoUrl;
+                product.Logo = logoUrl;                
+            }
+
+            if (!String.IsNullOrEmpty(backgroundUrl))
+            {
                 product.Background = backgroundUrl;
             }
 
