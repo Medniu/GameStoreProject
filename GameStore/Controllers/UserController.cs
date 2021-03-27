@@ -54,12 +54,11 @@ namespace GameStore.Controllers
 
                 var userDto = _mapper.Map<UserProfileModel, UserDTO>(userProfile);
 
-                var result = await _userService.ChangeInfo(userId, userDto);           
-
-                var updatedUserProfile = _mapper.Map<UserDTO, UserProfileViewModel>(result.UserDTO);
+                var result = await _userService.ChangeInfo(userId, userDto);                           
 
                 if (result.Result == true)
                 {
+                    var updatedUserProfile = _mapper.Map<UserDTO, UserProfileViewModel>(result.UserDTO);
                     return new JsonResult(updatedUserProfile);
                 }
                 else

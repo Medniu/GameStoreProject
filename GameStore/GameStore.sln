@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "..\DAL\DAL.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "..\BLL\BLL.csproj", "{3A055CC8-27DB-4160-9296-36A45EE30D24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStore.Tests", "..\GameStore.Tests\GameStore.Tests.csproj", "{C0C4A8BE-04D5-44CB-BAA3-12AA28C537E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3A055CC8-27DB-4160-9296-36A45EE30D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A055CC8-27DB-4160-9296-36A45EE30D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A055CC8-27DB-4160-9296-36A45EE30D24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0C4A8BE-04D5-44CB-BAA3-12AA28C537E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0C4A8BE-04D5-44CB-BAA3-12AA28C537E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0C4A8BE-04D5-44CB-BAA3-12AA28C537E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0C4A8BE-04D5-44CB-BAA3-12AA28C537E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
