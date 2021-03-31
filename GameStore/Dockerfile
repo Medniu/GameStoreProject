@@ -7,12 +7,12 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["GameStore.csproj", ""]
-COPY ["../BLL/BLL.csproj", "../BLL/"]
-COPY ["../DAL/DAL.csproj", "../DAL/"]
-RUN dotnet restore "./GameStore.csproj"
+COPY ["GameStore/GameStore.csproj", "GameStore/"]
+COPY ["BLL/BLL.csproj", "BLL/"]
+COPY ["DAL/DAL.csproj", "DAL/"]
+RUN dotnet restore "GameStore/GameStore.csproj"
 COPY . .
-WORKDIR "/src/."
+WORKDIR "/src/GameStore"
 RUN dotnet build "GameStore.csproj" -c Release -o /app/build
 
 FROM build AS publish
